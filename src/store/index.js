@@ -11,7 +11,9 @@ export default new Vuex.Store({
   state: {
     reviews: [],
     review: {},
-
+    
+    videos: [],
+    video: {id: "u5OgcZdNbMo"}  // 더미. 백엔드 연결해서 받아오기
   },
   getters: {
   },

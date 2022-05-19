@@ -1,13 +1,16 @@
 <template>
   <div>
+      <vdetail-video />
       <vdetail-review />
   </div>
 </template>
 
 <script>
-import VdetailReview from "@/components/vdetail/VdetailReview.vue"
+import VdetailVideo from "@/components/vdetail/VdetailVideo.vue";
+import VdetailReview from "@/components/vdetail/VdetailReview.vue";
 export default {
     components: {
+        VdetailVideo,
         VdetailReview
     }
 }
