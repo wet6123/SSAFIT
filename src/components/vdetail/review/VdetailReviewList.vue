@@ -10,7 +10,14 @@
           <b-tr v-for="review in reviews" :key="review.id">
             <b-td>(프로필)</b-td>
             <b-td>
-                <b-tr>{{review.writer}} (별)</b-tr>
+                <b-tr>
+                    {{review.writer}}
+                    <b-icon icon="star-fill"></b-icon>
+                    <b-icon icon="star-fill"></b-icon>
+                    <b-icon icon="star-fill"></b-icon>
+                    <b-icon icon="star-fill"></b-icon>
+                    <b-icon icon="star-fill"></b-icon>
+                </b-tr>
                 <b-tr>{{review.content}}</b-tr>
             </b-td>
             <b-td><b-link :to="`/board/${review.id}`">답글</b-link></b-td>
