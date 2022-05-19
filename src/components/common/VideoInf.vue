@@ -1,8 +1,18 @@
 <template>
-  <div>
-    <div v-for="photo in photos" v-bind:key="photo.title">
-      <h5>{{ photo.title }}</h5>
-      <img :src="photo.thumbnailUrl" alt="" />
+  <div style="max-width: 1190px">
+    <div style="display: flex; flex-wrap: wrap">
+      <span
+        v-for="photo in photos"
+        v-bind:key="photo.title"
+        style="display: inline-block; height: 250px"
+      >
+        <div>
+          <img :src="photo.thumbnailUrl" alt="" />
+        </div>
+        <span style="width: 200px; display: inline-block">{{
+          photo.title
+        }}</span>
+      </span>
     </div>
     <v-btn v-intersect="onIntersect">더 보기</v-btn>
   </div>
@@ -23,7 +33,7 @@ export default {
       const options = {
         params: {
           _page: this.page++,
-          _limit: 5,
+          _limit: 20,
         },
       };
       axios
