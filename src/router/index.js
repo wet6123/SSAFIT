@@ -96,6 +96,9 @@ const routes = [
         path: "/watched",
         name: "vlistwatched",
         component: VlistWatched,
+        children: [
+
+        ]
       },
     ],
   },
@@ -104,6 +107,9 @@ const routes = [
     name: "vdetail",
     component: VdetailView,
     // 추가해야함
+    // children: [
+    //   path: ""
+    // ]
   },
 ];
 
