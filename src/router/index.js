@@ -8,15 +8,17 @@ import SearchView from "../views/SearchView";
 import VlistView from "../views/VlistView";
 import VdetailView from "../views/VdetailView";
 // component
-import {
-  UserCheck,
-  UserSignup,
-  UserId,
-  UserCheck,
-  UserPw,
-} from "../components/user";
-import { MemberCheck, MemberEdit } from "../components/member";
-import { VlistLike, VlistWatched } from "../components/vlist";
+import UserLogin from "../components/user/UserLogin";
+import UserSignup from "../components/user/UserSignup";
+import UserId from "../components/user/UserId";
+import UserCheck from "../components/user/UserCheck";
+import UserPw from "../components/user/UserPw";
+
+import MemberCheck from "../components/member/MemberCheck";
+import MemberEdit from "../components/member/MemberEdit";
+
+import VlistLike from "../components/vlist/VlistLike";
+import VlistWatched from "../components/vlist/VlistWatched";
 
 Vue.use(VueRouter);
 
