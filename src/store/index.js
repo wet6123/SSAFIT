@@ -5,7 +5,7 @@ import axios from 'axios'
 
 Vue.use(Vuex)
 
-const REST_API = `http://localhost:9999/api`
+const REST_API = `http://localhost:9999`
 
 export default new Vuex.Store({
   state: {
@@ -13,11 +13,14 @@ export default new Vuex.Store({
     review: {},
     
     videos: [],
-    video: {id: "u5OgcZdNbMo"}  // 더미. 백엔드 연결해서 받아오기
+    video: {}
   },
   getters: {
   },
   mutations: {
+    GET_VIDEO(state, payload) {
+      state.video = payload
+    },
     GET_REVIEWS(state, payload) {
       state.reviews = payload
     },
@@ -33,6 +36,17 @@ export default new Vuex.Store({
 
   },
   actions: {
+    getVideo({ commit }, id) {
+      const API_URL = `${REST_API}/video/detail/${id}` // 백엔드 참고
+      axios({
+        url: API_URL,
+        method: 'GET',
+      }).then(res => {
+        commit('GET_VIDEO', res.data)
+      }).catch((err) => {
+        console.log(err)
+      })
+    },
     getReviews({ commit }, payload) {
       let params = null
 

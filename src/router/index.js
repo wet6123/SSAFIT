@@ -101,7 +101,7 @@ const routes = [
     ],
   },
   {
-    path: "/vdetail",
+    path: "/vdetail/:id",
     name: "vdetail",
     component: VdetailView,
     // 추가해야함
