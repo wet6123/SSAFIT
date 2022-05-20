@@ -11,7 +11,7 @@
         <div style="margin: 20px">
           <v-row>
             <v-col cols="2" class="absolute1" style="width: 200px">
-              <v-sheet rounded="lg">
+              <v-sheet rounded="lg" style="width: 180px">
                 <v-list color="transparent">
                   <v-list-item
                     v-for="(link, idx) in links"

@@ -1,7 +1,6 @@
 <template>
   <div>
     <header-nav />
-    <router-view />
     <footer-nav />
   </div>
 </template>

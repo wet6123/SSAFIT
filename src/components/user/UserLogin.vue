@@ -62,13 +62,13 @@ export default {
   methods: {
     loginCheck() {
       
-      if (this.userId && this.userPw) {
+      if (this.validation && this.validation2) {
         // vuex에 action으로 구현하기!
-        this.$router.push({path: "/user/signup"})
+        this.$router.push({name: "main"})
       }
       else {
         alert("올바른 값을 입력해주세요")
-        this.$router.push({path: "/user/login"})
+        this.$router.push({name: "userlogin"})
       }
     },
   },
