@@ -15,30 +15,33 @@
                 <v-list color="transparent">
                   <v-list-item
                     v-for="(link, idx) in links"
-                    :key="idx"
-                    link
+                    :key="idx + 'I'"
                     :to="{ path: link.router }"
+                    class="router"
+                    link
                   >
                     <v-list-item-icon>
                       <v-icon>{{ link.icon }}</v-icon>
                     </v-list-item-icon>
                     <v-list-item-content>
-                      <router-link class="router">
-                        {{ link.title }}</router-link
-                      >
+                      {{ link.title }}
                     </v-list-item-content>
                   </v-list-item>
 
                   <v-divider class="my-2"></v-divider>
 
-                  <v-list-item v-for="(link, idx) in links2" :key="idx" link>
+                  <v-list-item
+                    v-for="(link, idx) in links2"
+                    :key="idx + 'R'"
+                    :to="{ path: link.router }"
+                    class="router"
+                    link
+                  >
                     <v-list-item-icon>
                       <v-icon>{{ link.icon }}</v-icon>
                     </v-list-item-icon>
                     <v-list-item-content>
-                      <router-link :to="{ path: link.router }" class="router">
-                        {{ link.title }}
-                      </router-link>
+                      {{ link.title }}
                     </v-list-item-content>
                   </v-list-item>
                 </v-list>

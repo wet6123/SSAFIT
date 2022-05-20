@@ -34,27 +34,27 @@ const routes = [
     component: UserView,
     children: [
       {
-        path: "/login",
+        path: "login",
         name: "userlogin",
         component: UserLogin,
       },
       {
-        path: "/signup",
+        path: "signup",
         name: "usersignup",
         component: UserSignup,
       },
       {
-        path: "/id",
+        path: "id",
         name: "userid",
         component: UserId,
       },
       {
-        path: "/check",
+        path: "check",
         name: "usercheck",
         component: UserCheck,
       },
       {
-        path: "/pw",
+        path: "pw",
         name: "userpw",
         component: UserPw,
       },
@@ -66,12 +66,12 @@ const routes = [
     component: MemberView,
     children: [
       {
-        path: "/check",
+        path: "check",
         name: "membercheck",
         component: MemberCheck,
       },
       {
-        path: "/edit",
+        path: "edit",
         name: "memberedit",
         component: MemberEdit,
       },
@@ -88,17 +88,15 @@ const routes = [
     component: VlistView,
     children: [
       {
-        path: "/like",
+        path: "like",
         name: "vlistlike",
         component: VlistLike,
       },
       {
-        path: "/watched",
+        path: "watched",
         name: "vlistwatched",
         component: VlistWatched,
-        children: [
-
-        ]
+        children: [],
       },
     ],
   },

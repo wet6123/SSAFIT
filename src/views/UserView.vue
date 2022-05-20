@@ -1,5 +1,7 @@
 <template>
-  <div>유저뷰입니다.</div>
+  <div>
+    <router-view />
+  </div>
 </template>
 
 <script>
