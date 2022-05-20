@@ -1,24 +1,24 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 // view
-import MainView from "../views/MainView";
-import UserView from "../views/UserView";
-import MemberView from "../views/MemberView";
-import SearchView from "../views/SearchView";
-import VlistView from "../views/VlistView";
-import VdetailView from "../views/VdetailView";
+import MainView from "@/views/MainView.vue";
+import UserView from "@/views/UserView.vue";
+import MemberView from "@/views/MemberView.vue";
+import SearchView from "@/views/SearchView.vue";
+import VlistView from "@/views/VlistView.vue";
+import VdetailView from "@/views/VdetailView.vue";
 // component
-import UserLogin from "../components/user/UserLogin";
-import UserSignup from "../components/user/UserSignup";
-import UserId from "../components/user/UserId";
-import UserCheck from "../components/user/UserCheck";
-import UserPw from "../components/user/UserPw";
+import UserLogin from "@/components/user/UserLogin.vue";
+import UserSignup from "@/components/user/UserSignup.vue";
+import UserId from "@/components/user/UserId.vue";
+import UserCheck from "@/components/user/UserCheck.vue";
+import UserPw from "@/components/user/UserPw.vue";
 
-import MemberCheck from "../components/member/MemberCheck";
-import MemberEdit from "../components/member/MemberEdit";
+import MemberCheck from "@/components/member/MemberCheck.vue";
+import MemberEdit from "@/components/member/MemberEdit.vue";
 
-import VlistLike from "../components/vlist/VlistLike";
-import VlistWatched from "../components/vlist/VlistWatched";
+import VlistLike from "@/components/vlist/VlistLike.vue";
+import VlistWatched from "@/components/vlist/VlistWatched.vue";
 
 Vue.use(VueRouter);
 
