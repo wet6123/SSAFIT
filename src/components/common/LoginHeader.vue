@@ -111,6 +111,9 @@ export default {
       { title: "로그아웃", router: "/", icon: "mdi-logout" },
     ],
   }),
+  created() {
+    this.$store.dispatch("checkLogin");
+  },
 };
 </script>
 <style scoped>
