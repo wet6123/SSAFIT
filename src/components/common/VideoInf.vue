@@ -20,6 +20,7 @@
 
 <script>
 import axios from "axios";
+import lodash from "lodash";
 export default {
   name: "VideoInf",
   data() {
@@ -39,6 +40,12 @@ export default {
       axios
         .get("https://jsonplaceholder.typicode.com/photos", options)
         .then((res) => {
+          //title 특문 디코딩
+          for (let video of res.data) {
+            console.log("load videos");
+            video.title = lodash.unescape(video.title);
+          }
+          //data
           this.photos = [...this.photos, ...res.data];
         });
     },
