@@ -48,6 +48,10 @@ export default new Vuex.Store({
     USER_LOGIN(state) {
       state.isLogin = true;
     },
+    //로그아웃 관련
+    USER_LOGOUT(state) {
+      state.isLogin = false;
+    },
   },
   actions: {
     //비디오 관련
