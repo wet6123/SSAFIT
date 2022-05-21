@@ -14,7 +14,7 @@
         }}</span>
       </span>
     </div>
-    <v-btn v-intersect="onIntersect">더 보기</v-btn>
+    <v-btn v-intersect="onIntersect" @click="getPhotos">더 보기</v-btn>
   </div>
 </template>
 
