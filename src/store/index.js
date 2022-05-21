@@ -175,7 +175,7 @@ export default new Vuex.Store({
         .then((res) => {
           console.log(res);
           commit("USER_LOGIN");
-          localStorage.setItem("access-token", res.data["access-token"]);
+          sessionStorage.setItem("access-token", res.data["access-token"]);
           router.push({ name: "main" });
         })
         .catch((err) => {
