@@ -89,4 +89,12 @@ export default {
   text-decoration: none;
   font-size: 12px;
 }
+.signup-btn {
+  color: black;
+  text-decoration: none;
+}
+a {
+  color: black;
+  text-decoration: none;
+}
 </style>
