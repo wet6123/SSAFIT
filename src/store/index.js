@@ -9,18 +9,26 @@ const REST_API = `http://localhost:9999`
 
 export default new Vuex.Store({
   state: {
+    // 비디오 관련
+    videos: [],
+    video: {},
+
+    // 리뷰 관련
     reviews: [],
     review: {},
-    
-    videos: [],
-    video: {}
+
+    // 로그인 관련
+    isLogin: false
   },
   getters: {
   },
   mutations: {
+    // 비디오 관련
     GET_VIDEO(state, payload) {
       state.video = payload
     },
+
+    // 리뷰 관련
     GET_REVIEWS(state, payload) {
       state.reviews = payload
     },
@@ -34,10 +42,15 @@ export default new Vuex.Store({
       state.review = payload
     },
 
+    // 로그인 관련
+    USER_LOGIN(state) {
+      state.isLogin = true
+    }
+    
   },
   actions: {
     getVideo({ commit }, id) {
-      const API_URL = `${REST_API}/video/detail/${id}` // 백엔드 참고
+      const API_URL = `${REST_API}/video/detail/${id}`
       axios({
         url: API_URL,
         method: 'GET',
@@ -115,6 +128,23 @@ export default new Vuex.Store({
         console.log(err)
       })
     },
+
+    // 로그인 관련
+    userLogin({ commit }, user) {
+      const API_URL = `${REST_API}/user/login`
+      axios({
+        url: API_URL,
+        method: 'POST',
+        params: user
+      }).then(res => {
+        console.log(res)
+        commit('USER_LOGIN')
+        localStorage.setItem("access-token", res.data["access-token"])
+        router.push({name: 'main'})
+      }).catch((err) => {
+        console.log(err)
+      })
+    }
   },
   modules: {
   }

@@ -1,43 +1,42 @@
 <template>
-  <main class="form-signin">
+  <main class="form-login">
     <div class="container">
-      <div style="margin-top: 100px">
+      <div style="margin-top: 50px">
         <h2 class="text-center">LOG IN</h2>
         <b-form @submit.stop.prevent>
-           <b-form-group label="feedback-user">User ID
+          <b-form-group label="User ID">
             <b-form-input
               type="text"
-              v-model="userId"
-              :state="validation"
-              placeholder="Enter id">
-            </b-form-input>
-            <b-form-invalid-feedback :state="validation">
-            ID는 최소 5글자에서 12글자로 작성해주세요.
-          </b-form-invalid-feedback>
-          <b-form-valid-feedback :state="validation">
-            Looks Good.
-          </b-form-valid-feedback>
-        </b-form-group>
-         <b-form-group label="feedback-user">User ID
-          <b-form-input
-            type="password"
-            v-model="userPw"
-            :state="validation2"
-            id="feedback-Pw"
-          ></b-form-input>
-          <b-form-invalid-feedback :state="validation2">
-            PW는 최소 5글자에서 12글자로 작성해주세요.
-          </b-form-invalid-feedback>
-          <b-form-valid-feedback :state="validation2">
-            Looks Good.
-          </b-form-valid-feedback>
+              size="lg"
+              v-model="user.userid"
+              placeholder="아이디를 입력하세요."
+              trim></b-form-input>
           </b-form-group>
+          <b-form-group label="User PW">
+            <b-form-input
+              type="password"
+              size="lg"
+              v-model="user.pw"
+              placeholder="비밀번호를 입력하세요."
+              trim>></b-form-input>
+          </b-form-group>
+          <br/>
           <b-button
             class="w-100 btn btn-lg btn-outline-secondary login-btn"
             type="submit"
-            @click="loginCheck"
+            @click="login"
             >로그인</b-button>
         </b-form>
+        <div class="container text-center">
+          <router-link :to="{name: userid}" class="find">아이디 찾기</router-link> /
+          <router-link :to="{name: userpw}" class="find">비밀번호 재설정</router-link>
+          <br/>
+          <h6 class="text-center find mt-5">아직 회원이 아니신가요?</h6>
+          <b-button
+            class="w-100 btn btn-lg btn-outline-secondary signup-btn"
+            @click="moveToSignin"
+            >회원가입</b-button>
+        </div>
       </div>
     </div>
   </main>
@@ -47,52 +46,47 @@
 export default {
   data() {
     return {
-      userId: "",
-      userPw: "",
+      user: {
+        userid: "",
+        pw: "",
+      }
     };
   },
-  computed: {
-    validation() {
-      return this.userId.length > 4 && this.userId.length < 13;
-    },
-    validation2() {
-      return this.userPw.length > 4 && this.userPw.length < 13;
-    },
-  },
   methods: {
-    loginCheck() {
-      
-      if (this.validation && this.validation2) {
-        // vuex에 action으로 구현하기!
-        this.$router.push({name: "main"})
-      }
-      else {
-        alert("올바른 값을 입력해주세요")
+    login() {  
+      if(this.user.userid.length == 0) {
+        alert("아이디를 입력해주세요.")
         this.$router.push({name: "userlogin"})
       }
+      else if(this.user.pw.length == 0) {
+        alert("비밀번호를 입력해주세요.")
+        this.$router.push({name: "userlogin"})
+      }
+      else {
+        this.$store.dispatch('userLogin', this.user)
+      }
     },
+    moveToSignin() {
+      this.$router.push({name: "usersignup"})
+    }
   },
 };
 </script>
 
 <style scoped>
-body {
-  display: flex;
-  padding-top: 60px;
-  padding-bottom: 60px;
-  align-items: center;
-  background-color: #f6f6f6;
-}
-.form-signin {
+.form-login {
   width: 50%;
-  /* max-width: 600px; */
   margin: auto;
 }
-label {
-  font-weight: 600;
-}
-.login-btn {
+.btn {
   color: black;
   text-decoration: none;
+  font-style: italic;
+  font-weight: bold;
+}
+.find {
+  color: black;
+  text-decoration: none;
+  font-size: 12px;
 }
 </style>
