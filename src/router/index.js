@@ -115,6 +115,10 @@ const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
   routes,
+  scrollBehavior() {
+    //스크롤을 0,0 위치로 되돌림
+    return { x: 0, y: 0 };
+  },
 });
 
 export default router;
