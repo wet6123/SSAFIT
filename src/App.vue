@@ -1,7 +1,11 @@
 <template>
   <div>
-    <login-header />
-    <!-- <header-nav /> -->
+    <div v-if="isLogin">
+      <login-header />
+    </div>
+    <div v-else>
+      <header-nav />
+    </div>
     <router-link to="/vdetail/1">테스트용</router-link>
     <footer-nav />
   </div>
@@ -9,14 +13,17 @@
 
 <script>
 import LoginHeader from "@/components/common/LoginHeader.vue";
-// import HeaderNav from "@/components/common/HeaderNav.vue";
+import HeaderNav from "@/components/common/HeaderNav.vue";
 import FooterNav from "@/components/common/FooterNav.vue";
-
+import { mapState } from "vuex";
 export default {
   components: {
     LoginHeader,
-    // HeaderNav,
+    HeaderNav,
     FooterNav,
+  },
+  computed: {
+    ...mapState(["isLogin"]),
   },
 };
 </script>
