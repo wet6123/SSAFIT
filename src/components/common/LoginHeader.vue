@@ -24,6 +24,11 @@
                 {{ link.title }}</v-list-item-title
               >
             </v-list-item>
+            <v-list-item @click="userLogout" class="router" link>
+              <v-list-item-title
+                ><v-icon>mdi-logout</v-icon> 로그아웃</v-list-item-title
+              >
+            </v-list-item>
           </v-list>
         </v-menu>
       </v-app-bar>
@@ -108,11 +113,13 @@ export default {
         router: "/vlist/watched",
         icon: "mdi-monitor-eye",
       },
-      { title: "로그아웃", router: "/", icon: "mdi-logout" },
     ],
   }),
-  created() {
-    this.$store.dispatch("checkLogin");
+  methods: {
+    userLogout() {
+      this.$store.commit("USER_LOGOUT");
+      this.$router.push({ name: "main" });
+    },
   },
 };
 </script>
