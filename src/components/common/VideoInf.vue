@@ -19,7 +19,6 @@
 </template>
 
 <script>
-// import axios from "axios";
 import lodash from "lodash";
 import { mapState } from "vuex";
 
@@ -32,14 +31,16 @@ export default {
       current: 0, //지금 보여주는 비디오 개수
       loaded: 0, //지금까지 로딩된 비디오 배열의 비디오 수 => 이거를 howMany씩 잘라서 shownPhotos에 넣는다
       howMany: 15, //한번에 몇개 영상 갱신?
+      dataState: this.option.state,
     };
   },
+  props: { option: Object },
   computed: {
-    ...mapState(["videos"]),
+    ...mapState(["videos"]), //여기에 state 더 불러와줘야함
   },
   methods: {
     getPhotos: function () {
-      this.$store.dispatch("getVideos").then(() => {
+      this.$store.dispatch(this.option.action).then(() => {
         //title 특문 디코딩
         for (let video of this.videos) {
           console.log("load videos");
@@ -48,14 +49,13 @@ export default {
         //data
         this.photos = [...this.photos, ...this.videos];
         this.loaded += this.videos.length;
-        console.log(this.photos.length);
-        console.log("loaded: " + this.loaded + " current: " + this.current);
+        // console.log(this.photos.length);
         this.addFromLoaded();
       });
     },
     onIntersect(entries, observer, isIntersecting) {
       if (isIntersecting) {
-        console.log(isIntersecting);
+        // console.log(isIntersecting);
         if (this.current == this.loaded) {
           this.getPhotos();
         } else {
@@ -67,7 +67,8 @@ export default {
       let added = this.howMany;
       if (this.howMany > this.photos.length) added = this.photos.length;
       this.shownPhotos.splice(this.current, 0, ...this.photos.splice(0, added));
-      console.log(this.shownPhotos.length);
+      console.log("loaded: " + this.loaded + " current: " + this.current);
+      // console.log(this.shownPhotos.length);
       this.current += added;
     },
   },
