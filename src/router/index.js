@@ -22,6 +22,14 @@ import VlistWatched from "@/components/vlist/VlistWatched.vue";
 
 Vue.use(VueRouter);
 
+const requireAuth = () => (to, from, next) => {
+  if (sessionStorage.getItem("access-token")) {
+    return next();
+  }
+  next("/user/login");
+  alert("로그인이 필요한 서비스입니다.");
+};
+
 const routes = [
   {
     path: "/",
@@ -64,6 +72,7 @@ const routes = [
     path: "/member",
     name: "member",
     component: MemberView,
+    beforeEnter: requireAuth(),
     children: [
       {
         path: "check",
@@ -86,6 +95,7 @@ const routes = [
     path: "/vlist",
     name: "vlist",
     component: VlistView,
+    beforeEnter: requireAuth(),
     children: [
       {
         path: "like",
@@ -104,6 +114,7 @@ const routes = [
     path: "/vdetail/:id",
     name: "vdetail",
     component: VdetailView,
+    beforeEnter: requireAuth(),
     // 추가해야함
     // children: [
     //   path: ""
