@@ -1,3 +1,5 @@
+// 새로고침하면 목록 사라져버림
+
 <template>
   <div>
     <!-- 검색창 -->
@@ -12,7 +14,6 @@
       <input class="btn" type="button" value="검색" />
     </form>
     <!-- 영상 목록 -->
-    <!-- <video-inf :option="{ state: 'videos', action: 'getVideos' }"></video-inf> -->
     <div style="display: flex; flex-wrap: wrap">
       <span
         v-for="(photo, idx) in result"
@@ -44,14 +45,14 @@ export default {
     return {
       keyword: "",
       result: [],
-      loaded: [],
     };
   },
+  props: { option: Object, rerender: Number },
   computed: {
     ...mapState(["videos"]),
   },
   methods: {
-    search: function (keyword) {
+    search(keyword) {
       let ans = [];
       console.log(keyword);
       for (let video of this.videos) {
@@ -62,17 +63,27 @@ export default {
       this.result = ans;
     },
     init() {
-      this.$store.dispatch("getVideos").then(() => {
+      this.$store.dispatch(this.option.action).then(() => {
         for (let video of this.videos) {
           video.title = lodash.unescape(video.title);
         }
         this.result = this.videos;
+        sessionStorage.setItem("videos", JSON.stringify(this.videos));
         console.log("load videos for search");
       });
     },
   },
   created() {
-    this.init();
+    if (!sessionStorage.getItem("videos")) {
+      // alert("init");
+      this.init();
+    } else {
+      // alert("no init");
+      this.result = JSON.parse(sessionStorage.getItem("videos"));
+    }
+  },
+  beforeDestroy() {
+    sessionStorage.removeItem("videos");
   },
 };
 </script>
