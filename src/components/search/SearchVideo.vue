@@ -33,8 +33,6 @@
 </template>
 
 <script>
-// import VideoInf from "@/components/common/VideoInf.vue";
-import lodash from "lodash";
 import { mapState } from "vuex";
 
 export default {
@@ -63,28 +61,11 @@ export default {
       }
       this.result = ans;
     },
-    init() {
-      this.$store.dispatch(this.option.action).then(() => {
-        for (let video of this.videos) {
-          video.title = lodash.unescape(video.title);
-        }
-        this.result = this.videos;
-        sessionStorage.setItem("videos", JSON.stringify(this.videos));
-        console.log("load videos for search");
-      });
-    },
   },
   created() {
-    if (!sessionStorage.getItem("videos")) {
-      // alert("init");
-      this.init();
-    } else {
-      // alert("no init");
-      this.result = JSON.parse(sessionStorage.getItem("videos"));
-    }
-  },
-  beforeDestroy() {
-    sessionStorage.removeItem("videos");
+    this.$store.dispatch(this.option.action).then(() => {
+      this.result = this.videos;
+    });
   },
 };
 </script>

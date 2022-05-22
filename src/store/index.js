@@ -2,6 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 import router from "@/router";
 import axios from "axios";
+import lodash from "lodash";
 
 Vue.use(Vuex);
 
@@ -72,29 +73,36 @@ export default new Vuex.Store({
       state.compare_id = "";
       state.checkedEmail = false;
       state.compare_email = "";
-    }
+    },
   },
   actions: {
     //비디오 관련
     getVideos({ commit }, payload) {
-      let params = null;
+      return new Promise((resolve, reject) => {
+        let params = null;
 
-      if (payload) {
-        params = payload;
-      }
-      const API_URL = `${REST_API}/video/all`; // 백엔드 참고
-      axios({
-        url: API_URL,
-        method: "GET",
-        params,
-      })
-        .then((res) => {
-          console.log(res);
-          commit("GET_VIDEOS", res.data);
+        if (payload) {
+          params = payload;
+        }
+        const API_URL = `${REST_API}/video/all`; // 백엔드 참고
+        axios({
+          url: API_URL,
+          method: "GET",
+          params,
         })
-        .catch((err) => {
-          console.log(err);
-        });
+          .then((res) => {
+            for (let video of res.data) {
+              video.title = lodash.unescape(video.title);
+            }
+            console.log(res);
+            commit("GET_VIDEOS", res.data);
+            resolve();
+          })
+          .catch((err) => {
+            console.log(err);
+            reject();
+          });
+      });
     },
     getVideo({ commit }, id) {
       const API_URL = `${REST_API}/video/detail/${id}`;
@@ -216,17 +224,15 @@ export default new Vuex.Store({
       })
         .then((res) => {
           console.log(res);
-          if(res.data == "success") {
+          if (res.data == "success") {
             commit("CHECK_DUPL_ID", userid);
-            alert("사용가능한 아이디 입니다.")
+            alert("사용가능한 아이디 입니다.");
           }
         })
         .catch((err) => {
           console.log(err);
-          if(err.response.status == 500)
-            alert("중복된 아이디 입니다.")
-          else
-            alert("서버가 응답하지 않습니다.")
+          if (err.response.status == 500) alert("중복된 아이디 입니다.");
+          else alert("서버가 응답하지 않습니다.");
         });
     },
     DuplicateEmail({ commit }, email) {
@@ -237,17 +243,15 @@ export default new Vuex.Store({
       })
         .then((res) => {
           console.log(res);
-          if(res.data == "success") {
+          if (res.data == "success") {
             commit("CHECK_DUPL_EMAIL", email);
-            alert("사용가능한 이메일 입니다.")
+            alert("사용가능한 이메일 입니다.");
           }
         })
         .catch((err) => {
           console.log(err);
-          if(err.response.status == 500)
-            alert("중복된 이메일 입니다.")
-          else
-            alert("서버가 응답하지 않습니다.")
+          if (err.response.status == 500) alert("중복된 이메일 입니다.");
+          else alert("서버가 응답하지 않습니다.");
         });
     },
     userSignup({ commit }, user) {
@@ -259,7 +263,7 @@ export default new Vuex.Store({
       })
         .then((res) => {
           console.log(res);
-          alert(`${user.nickname}님, 회원가입을 축하드립니다!`)
+          alert(`${user.nickname}님, 회원가입을 축하드립니다!`);
           commit("DUPL_RESET");
           router.push({ name: "userlogin" });
         })

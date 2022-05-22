@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import lodash from "lodash";
+// import lodash from "lodash";
 import { mapState } from "vuex";
 
 export default {
@@ -43,10 +43,10 @@ export default {
     getPhotos: function () {
       this.$store.dispatch(this.option.action).then(() => {
         //title 특문 디코딩
-        for (let video of this.videos) {
-          console.log("load videos");
-          video.title = lodash.unescape(video.title);
-        }
+        console.log("load videos");
+        // for (let video of this.videos) {
+        //   video.title = lodash.unescape(video.title);
+        // }
         //data
         this.photos = [...this.photos, ...this.videos];
         this.loaded += this.videos.length;
