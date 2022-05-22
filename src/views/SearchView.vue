@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div>여기는 searchView 입니다!</div>
-    <search-video />
+    <search-video :option="{ state: 'videos', action: 'getVideos' }" />
   </div>
 </template>
 
