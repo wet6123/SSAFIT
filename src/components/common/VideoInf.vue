@@ -36,11 +36,17 @@ export default {
   },
   props: {
     option: {
-      type: [Object],
+      type: Object,
     },
     part: {
-      type: [String],
+      type: String,
       default: "",
+    },
+  },
+  watch: {
+    part: function (val) {
+      console.log(val);
+      this.reset();
     },
   },
   computed: {
@@ -81,6 +87,14 @@ export default {
       console.log("loaded: " + this.loaded + " current: " + this.current);
       // console.log(this.shownPhotos.length);
       this.current += added;
+    },
+    reset() {
+      // alert(this.part); //현재 부위 출력, 전체는 ""
+      this.photos = [];
+      this.shownPhotos = [];
+      this.loaded = 0;
+      this.current = 0;
+      this.getPhotos();
     },
   },
   created() {
