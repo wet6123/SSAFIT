@@ -6,7 +6,6 @@
     <div v-else>
       <header-nav />
     </div>
-    <router-link to="/vdetail/1">테스트용</router-link>
     <footer-nav />
   </div>
 </template>
