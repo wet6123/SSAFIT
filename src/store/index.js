@@ -119,13 +119,13 @@ export default new Vuex.Store({
     },
 
     //리뷰 관련
-    getReviews({ commit }, payload) {
+    getReviews({ commit }, id) {
       let params = null;
 
-      if (payload) {
-        params = payload;
+      if (id) {
+        params = id;
       }
-      const API_URL = `${REST_API}/board`; // 백엔드 참고
+      const API_URL = `${REST_API}/review/all/${id}`; // 백엔드 참고
       axios({
         url: API_URL,
         method: "GET",
@@ -140,7 +140,7 @@ export default new Vuex.Store({
         });
     },
     getReview({ commit }, id) {
-      const API_URL = `${REST_API}/board/${id}`; // 백엔드 참고
+      const API_URL = `${REST_API}/review/par/${id}`; // 백엔드 참고
       axios({
         url: API_URL,
         method: "GET",
@@ -153,7 +153,7 @@ export default new Vuex.Store({
         });
     },
     createReview({ commit }, review) {
-      const API_URL = `${REST_API}/board`; // 백엔드 참고
+      const API_URL = `${REST_API}/review/write`; // 백엔드 참고
       axios({
         url: API_URL,
         method: "POST",
@@ -161,14 +161,13 @@ export default new Vuex.Store({
       })
         .then(() => {
           commit("CREATE_REVIEW", review);
-          router.push("/board");
         })
         .catch((err) => {
           console.log(err);
         });
     },
     updateReview({ commit }, review) {
-      const API_URL = `${REST_API}/board`; // 백엔드 참고
+      const API_URL = `${REST_API}/review/update`; // 백엔드 참고
       axios({
         url: API_URL,
         method: "PUT",
@@ -182,12 +181,13 @@ export default new Vuex.Store({
           console.log(err);
         });
     },
-    deleteReview(context, id) {
+    deleteReview(context, reviewid) {
       context;
-      const API_URL = `${REST_API}/board/${id}`; // 백엔드 참고
+      const API_URL = `${REST_API}/review/delete`; // 백엔드 참고
       axios({
         url: API_URL,
         method: "DELETE",
+        params: reviewid,
       })
         .then(() => {
           router.push({ name: "vdetail" });
@@ -282,11 +282,11 @@ export default new Vuex.Store({
       })
         .then((res) => {
           console.log(res);
-          alert(`${user.nickname}님의 id는 "${res.data}" 입니다.`)
+          alert(`${user.nickname}님의 id는 "${res.data}" 입니다.`);
         })
         .catch((err) => {
           console.log(err);
-          alert(`일치하는 회원 정보가 없습니다.`)
+          alert(`일치하는 회원 정보가 없습니다.`);
         });
     },
   },
