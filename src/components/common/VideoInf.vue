@@ -1,10 +1,11 @@
 <template>
   <div style="max-width: 1190px">
     <div style="display: flex; flex-wrap: wrap">
-      <span
+      <router-link
         v-for="(photo, idx) in shownPhotos"
         v-bind:key="idx"
-        style="display: inline-block; height: 250px"
+        style="display: inline-block; height: 250px; color: black"
+        :to="`/vdetail/${photo.id}`"
       >
         <div>
           <img :src="photo.url" alt="" style="width: 200px" />
@@ -12,7 +13,7 @@
         <span style="width: 200px; display: inline-block">{{
           photo.title
         }}</span>
-      </span>
+      </router-link>
     </div>
     <v-btn v-intersect="onIntersect" @click="getPhotos">더 보기</v-btn>
   </div>

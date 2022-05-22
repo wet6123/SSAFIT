@@ -15,10 +15,11 @@
     </form>
     <!-- 영상 목록 -->
     <div style="display: flex; flex-wrap: wrap">
-      <span
+      <router-link
         v-for="(photo, idx) in result"
         v-bind:key="idx"
         style="display: inline-block; height: 250px"
+        :to="`/vdetail/${photo.id}`"
       >
         <div>
           <img :src="photo.url" alt="" style="width: 200px" />
@@ -26,7 +27,7 @@
         <span style="width: 200px; display: inline-block">{{
           photo.title
         }}</span>
-      </span>
+      </router-link>
     </div>
   </div>
 </template>
