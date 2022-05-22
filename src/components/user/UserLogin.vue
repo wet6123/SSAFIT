@@ -1,12 +1,13 @@
 <template>
   <main class="form-login">
     <div class="container">
-      <div style="margin-top: 50px">
+      <div style="margin-top: 100px">
         <h2 class="text-center">LOG IN</h2>
         <b-form @submit.stop.prevent>
           <b-form-group label="User ID">
             <b-form-input
               type="text"
+              id="userID"
               size="lg"
               v-model="user.userid"
               placeholder="아이디를 입력하세요."
@@ -15,6 +16,7 @@
           <b-form-group label="User PW">
             <b-form-input
               type="password"
+              id="userPW"
               size="lg"
               v-model="user.pw"
               placeholder="비밀번호를 입력하세요."
@@ -56,11 +58,12 @@ export default {
     login() {  
       if(this.user.userid.length == 0) {
         alert("아이디를 입력해주세요.")
-        this.$router.push({name: "userlogin"})
+        document.querySelector("#userID").focus();
       }
       else if(this.user.pw.length == 0) {
         alert("비밀번호를 입력해주세요.")
         this.$router.push({name: "userlogin"})
+        document.querySelector("#userPW").focus();
       }
       else {
         this.$store.dispatch('userLogin', this.user)

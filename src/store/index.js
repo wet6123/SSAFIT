@@ -18,7 +18,13 @@ export default new Vuex.Store({
     review: {},
 
     // 로그인 관련
-    isLogin: false,
+    isLogin: false, // 로그인 상태
+    userinfo: {},
+    // 회원가입 관련
+    checkedId: false, // id 중복체크완료 여부
+    checkedEmail: false, // eamil 중복체크완료 여부
+    compare_id: "", // 중복확인 완료 id값 임시저장
+    compare_email: "", // 중복확인 완료 email값 임시저장
   },
   getters: {},
   mutations: {
@@ -52,6 +58,21 @@ export default new Vuex.Store({
     USER_LOGOUT(state) {
       state.isLogin = false;
     },
+    // 회원가입관련
+    CHECK_DUPL_ID(state, userid) {
+      state.checkedId = true;
+      state.compare_id = userid;
+    },
+    CHECK_DUPL_EMAIL(state, email) {
+      state.checkedEmail = true;
+      state.compare_email = email;
+    },
+    DUPL_RESET(state) {
+      state.checkedId = false;
+      state.compare_id = "";
+      state.checkedEmail = false;
+      state.compare_email = "";
+    }
   },
   actions: {
     //비디오 관련
@@ -181,6 +202,66 @@ export default new Vuex.Store({
           commit("USER_LOGIN");
           sessionStorage.setItem("access-token", res.data["access-token"]);
           router.push({ name: "main" });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    // 회원가입 관련
+    DuplicateId({ commit }, userid) {
+      const API_URL = `${REST_API}/user/join/id/${userid}`;
+      axios({
+        url: API_URL,
+        method: "GET",
+      })
+        .then((res) => {
+          console.log(res);
+          if(res.data == "success") {
+            commit("CHECK_DUPL_ID", userid);
+            alert("사용가능한 아이디 입니다.")
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+          if(err.response.status == 500)
+            alert("중복된 아이디 입니다.")
+          else
+            alert("서버가 응답하지 않습니다.")
+        });
+    },
+    DuplicateEmail({ commit }, email) {
+      const API_URL = `${REST_API}/user/join/email/${email}`;
+      axios({
+        url: API_URL,
+        method: "GET",
+      })
+        .then((res) => {
+          console.log(res);
+          if(res.data == "success") {
+            commit("CHECK_DUPL_EMAIL", email);
+            alert("사용가능한 이메일 입니다.")
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+          if(err.response.status == 500)
+            alert("중복된 이메일 입니다.")
+          else
+            alert("서버가 응답하지 않습니다.")
+        });
+    },
+    userSignup({ commit }, user) {
+      const API_URL = `${REST_API}/user/join`;
+      axios({
+        url: API_URL,
+        method: "POST",
+        params: user,
+      })
+        .then((res) => {
+          console.log(res);
+          alert(`${user.nickname}님, 회원가입을 축하드립니다!`)
+          commit("DUPL_RESET");
+          router.push({ name: "userlogin" });
         })
         .catch((err) => {
           console.log(err);
