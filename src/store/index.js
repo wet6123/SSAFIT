@@ -271,6 +271,24 @@ export default new Vuex.Store({
           console.log(err);
         });
     },
+    // 아이디찾기
+    getUserId(context, user) {
+      context;
+      const API_URL = `${REST_API}/user/find-id`;
+      axios({
+        url: API_URL,
+        method: "GET",
+        params: user,
+      })
+        .then((res) => {
+          console.log(res);
+          alert(`${user.nickname}님의 id는 "${res.data}" 입니다.`)
+        })
+        .catch((err) => {
+          console.log(err);
+          alert(`일치하는 회원 정보가 없습니다.`)
+        });
+    },
   },
   modules: {},
 });

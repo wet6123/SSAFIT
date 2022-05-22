@@ -30,8 +30,8 @@
             >로그인</b-button>
         </b-form>
         <div class="container text-center">
-          <router-link :to="{name: userid}" class="find">아이디 찾기</router-link> /
-          <router-link :to="{name: userpw}" class="find">비밀번호 재설정</router-link>
+          <router-link :to="{name: 'userid'}" class="find">아이디 찾기</router-link> /
+          <router-link :to="{name: 'userpw'}" class="find">비밀번호 재설정</router-link>
           <br/>
           <h6 class="text-center find mt-5">아직 회원이 아니신가요?</h6>
           <b-button
