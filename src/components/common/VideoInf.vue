@@ -32,24 +32,34 @@ export default {
       current: 0, //지금 보여주는 비디오 개수
       loaded: 0, //지금까지 로딩된 비디오 배열의 비디오 수 => 이거를 howMany씩 잘라서 shownPhotos에 넣는다
       howMany: 15, //한번에 몇개 영상 갱신?
-      dataState: this.option.state,
     };
   },
-  props: { option: Object },
+  props: {
+    option: {
+      type: [Object],
+    },
+    part: {
+      type: [String],
+      default: "",
+    },
+  },
   computed: {
     ...mapState(["videos"]), //여기에 state 더 불러와줘야함
   },
   methods: {
     getPhotos: function () {
       this.$store.dispatch(this.option.action).then(() => {
-        //title 특문 디코딩
         console.log("load videos");
-        // for (let video of this.videos) {
-        //   video.title = lodash.unescape(video.title);
-        // }
+        let add = [];
         //data
-        this.photos = [...this.photos, ...this.videos];
-        this.loaded += this.videos.length;
+        console.log(this.part);
+        for (let video of this.videos) {
+          if (video.part.includes(this.part)) {
+            add.push(video);
+          }
+        }
+        this.photos = [...this.photos, ...add];
+        this.loaded += add.length;
         // console.log(this.photos.length);
         this.addFromLoaded();
       });
