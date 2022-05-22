@@ -109,6 +109,9 @@ export default new Vuex.Store({
       axios({
         url: API_URL,
         method: "GET",
+        headers: {
+          "access-token": sessionStorage.getItem("access-token")
+        }
       })
         .then((res) => {
           commit("GET_VIDEO", res.data);

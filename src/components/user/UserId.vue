@@ -1,8 +1,8 @@
 <template>
-  <main class="form-login">
+  <main class="form-findid">
     <div class="container">
       <div style="margin-top: 100px">
-        <h2 class="text-center">아이디 찾기</h2>
+        <h2 class="text-center"><b>아이디 찾기</b></h2>
         <b-form @submit.stop.prevent>
           <b-form-group label="이름">
             <b-form-input
@@ -24,13 +24,13 @@
           </b-form-group>
           <br/>
           <b-button
-            class="w-100 btn btn-lg btn-outline-secondary login-btn"
+            class="w-100 btn btn-lg btn-outline-secondary findid-btn"
             type="submit"
             @click="findId"
             >아이디 찾기</b-button>
         </b-form>
         <div class="container text-right">
-            <router-link :to="{name: 'userpw'}" class="find">비밀번호 재설정</router-link>
+            <router-link :to="{name: 'usercheck'}" class="find">비밀번호 재설정</router-link>
         </div>
       </div>
     </div>
@@ -49,26 +49,25 @@ export default {
     findId() {  
       if(this.nickname.length == 0) {
         alert("이름을 입력해주세요.")
-        document.querySelector("#userID").focus();
+        document.querySelector("#userName").focus();
       }
       else if(this.email.length == 0) {
         alert("이메일을 입력해주세요.")
-        this.$router.push({name: "userlogin"})
-        document.querySelector("#userPW").focus();
+        document.querySelector("#userEmail").focus();
       }
       else {
         this.$store.dispatch('getUserId', {nickname: this.nickname, email: this.email})
+        this.nickname = "";
+        this.email = "";
+        document.querySelector("#userName").focus();
       }
     },
-    moveToSignin() {
-      this.$router.push({name: "usersignup"})
-    }
   },
 };
 </script>
 
 <style scoped>
-.form-login {
+.form-findid {
   width: 50%;
   margin: auto;
 }

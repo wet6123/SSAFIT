@@ -106,7 +106,7 @@
           <b-row>
             <b-col cols="9">
               <b-button
-                class="w-100 btn btn-lg btn-outline-secondary login-btn"
+                class="w-100 btn btn-lg btn-outline-secondary signup-btn"
                 type="submit"
                 @click="signup"
                 :disabled="isDisabled"
@@ -194,7 +194,7 @@ export default {
   width: 60%;
   margin: auto;
 }
-.login-btn {
+.signup-btn {
   color: black;
   text-decoration: none;
 }
