@@ -14,17 +14,6 @@
       <button id="prevBtn" ref="prevBtn" @click="clickBefore">Prev</button>
       <button id="nextBtn" ref="nextBtn" @click="clickNext">Next</button>
     </div>
-    <!-- 테스트용입니다 이 아래는 나중에 삭제하세요 -->
-    <!-- <div>
-      <img
-        v-for="photo in photos"
-        :key="photo.idx"
-        :src="photo.thumbnailUrl"
-        :class="[{ lastImgs: photo.last }, { firstImgs: photo.first }]"
-        alt=""
-      />
-    </div> -->
-    <!-- 테스트용입니다 이 위는 나중에 삭제하세요 -->
   </div>
 </template>
 
@@ -99,6 +88,7 @@ export default {
       this.transformImg();
     },
     transitionEnd() {
+      //여기 내 코드에 맞게 수정할 필요가 있음, 처음 <-> 마지막 왔다갔다 하는 부분
       if (this.$imgs[this.counter * this.numberOfImgs].class === "firstImgs") {
         this.$imgBlock.style.transition = "none";
         this.counter = this.$imgs.length - this.counter;
