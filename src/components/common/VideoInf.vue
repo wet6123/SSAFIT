@@ -1,19 +1,15 @@
 <template>
   <div style="max-width: 1190px">
-    <div style="display: flex; flex-wrap: wrap; justify-content: space-between">
-      <router-link
-        v-for="(photo, idx) in shownPhotos"
-        v-bind:key="idx"
-        style="display: inline-block; height: 250px; color: black"
-        :to="`/vdetail/${photo.id}`"
-      >
-        <div>
-          <img :src="photo.url" alt="" style="width: 200px" />
-        </div>
-        <span style="width: 200px; display: inline-block">{{
-          photo.title
-        }}</span>
-      </router-link>
+    <div class="cardContainer">
+      <span v-for="(photo, idx) in shownPhotos" v-bind:key="idx" class="card">
+        <router-link :to="`/vdetail/${photo.id}`">
+          <img :src="photo.url" alt="" />
+          <span>{{ photo.title }}</span>
+        </router-link>
+        <button>
+          <font-awesome-icon icon="fa-solid fa-heart" id="likeBtn" />
+        </button>
+      </span>
     </div>
     <v-btn v-intersect="onIntersect" @click="getPhotos">더 보기</v-btn>
   </div>
@@ -65,7 +61,7 @@ export default {
           for (let video of this.videos) {
             if (video.part.includes(this.part)) {
               let { title, ...rest } = video;
-              title = this.textLengthOverCut(title, 25, "...");
+              title = this.textLengthOverCut(title, 18, "...");
               add.push({ title, ...rest });
             }
           }
@@ -74,7 +70,7 @@ export default {
           for (let video of this.watched) {
             if (video.part.includes(this.part)) {
               let { title, ...rest } = video;
-              title = this.textLengthOverCut(title, 25, "...");
+              title = this.textLengthOverCut(title, 18, "...");
               add.unshift({ title, ...rest });
             }
           }
@@ -83,7 +79,7 @@ export default {
           for (let video of this.liked) {
             if (video.part.includes(this.part)) {
               let { title, ...rest } = video;
-              title = this.textLengthOverCut(title, 25, "...");
+              title = this.textLengthOverCut(title, 18, "...");
               add.unshift({ title, ...rest });
             }
           }
@@ -146,3 +142,83 @@ export default {
   },
 };
 </script>
+
+<style>
+.card {
+  flex-grow: 1;
+  display: inline-block;
+  width: auto;
+  flex-basis: 223px;
+  transition: 0.5s;
+  padding: 10px;
+  border: 0 !important;
+}
+
+.card:hover {
+  flex-grow: 4;
+  flex-basis: 270px;
+  transition: 0.5s;
+}
+
+.card img {
+  width: 100%;
+  transition: 0.3s;
+}
+
+.card:hover img {
+  width: 100%;
+  filter: brightness(50%);
+  transition: 0.3s;
+}
+
+.card span {
+  transition: 0.3s;
+  color: black;
+}
+
+.card:hover span {
+  position: absolute;
+  width: 80%;
+  top: 60%;
+  left: 10%;
+  color: white;
+  font-size: 23px;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.card button {
+  position: absolute;
+  top: 45%;
+  left: 10%;
+  z-index: 2;
+  visibility: hidden;
+  opacity: 0;
+  transition-property: visibility, opacity;
+  transition-duration: 0.5s;
+}
+
+.card:hover button {
+  opacity: 1;
+  visibility: visible;
+  transition: 0.5s;
+}
+
+#likeBtn {
+  color: white;
+  font-size: 30px;
+  transition: 0.3s;
+}
+
+#likeBtn:hover {
+  color: #f82f62;
+  transition: 0.3s;
+}
+
+.cardContainer {
+  display: flex;
+  box-sizing: border-box;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+</style>
