@@ -151,7 +151,7 @@ export default new Vuex.Store({
         url: API_URL,
         method: "GET",
         headers: {
-          "access-token": sessionStorage.getItem("access-token"),
+          "access-token": localStorage.getItem("access-token"),
         },
       })
         .then((res) => {
