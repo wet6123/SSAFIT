@@ -3,13 +3,18 @@
     <div>MainCarousel</div>
     <div class="carousel-container">
       <div ref="imgBlock" class="carousel-slide">
-        <img
-          v-for="photo in photos"
+        <router-link
+          v-for="photo in recommend"
           :key="photo.idx"
-          :src="photo.thumbnailUrl"
           :class="[{ lastImgs: photo.last }, { firstImgs: photo.first }]"
-          alt=""
-        />
+          :to="`/vdetail/${photo.id}`"
+          style="color: black"
+        >
+          <img :src="photo.url" alt="" class="oneSlide" />
+          <span style="width: 200px; display: inline-block">{{
+            photo.title
+          }}</span>
+        </router-link>
       </div>
       <button id="prevBtn" ref="prevBtn" @click="clickBefore">Prev</button>
       <button id="nextBtn" ref="nextBtn" @click="clickNext">Next</button>
@@ -18,51 +23,28 @@
 </template>
 
 <script>
-import axios from "axios";
+import { mapState } from "vuex";
+
 export default {
   name: "MainCarousel",
   data() {
     return {
-      photos: [],
+      // photos: [],
       page: 1,
-      size: 150, //이미지 하나 크기 (width)
+      size: 200, //이미지 하나 크기 (width)
       numberOfImgs: 3,
       counter: 1,
     };
   },
+  computed: {
+    ...mapState(["recommend"]), //여기에 state 더 불러와줘야함
+  },
   methods: {
     getPhotos: function () {
-      const options = {
-        params: {
-          _page: this.page++,
-          _limit: 9,
-        },
-      };
-      axios
-        .get("https://jsonplaceholder.typicode.com/photos", options)
-        .then((res) => {
-          this.photos = [
-            //딥카피 위해서 json.parse... 등 쓴거임
-            //딥카피 안하면 밑에서 key값 꼬여서 id 지정 고장남
-            JSON.parse(JSON.stringify(res.data[6])),
-            JSON.parse(JSON.stringify(res.data[7])),
-            JSON.parse(JSON.stringify(res.data[8])),
-            ...res.data,
-            JSON.parse(JSON.stringify(res.data[0])),
-            JSON.parse(JSON.stringify(res.data[1])),
-            JSON.parse(JSON.stringify(res.data[2])),
-          ];
-          let cnt = 0;
-          this.photos.forEach((element) => {
-            cnt++;
-            element.id = cnt;
-            if (cnt < 4) element.last = true;
-            else element.last = false;
-            if (cnt > 12) element.first = true;
-            else element.first = false;
-          });
-          // console.log(this.photos);
-        });
+      this.$store.dispatch("getRecommend").then(() => {
+        console.log("recommend");
+        console.log(this.recommend);
+      });
     },
     transformImg() {
       this.$refs.imgBlock.style.transform = `translateX(${
@@ -71,7 +53,7 @@ export default {
     },
     clickNext() {
       console.log(this.counter);
-      if (this.counter > this.photos.length / this.numberOfImgs - 2) {
+      if (this.counter > this.recommend.length / this.numberOfImgs - 2) {
         return;
       }
       this.$refs.imgBlock.style.transition = "transform .3s ease-in-out";
@@ -110,11 +92,12 @@ export default {
 <style>
 :root {
   /* 이미지 사이즈 지정해서 캐러샐 크기 조정 가능*/
-  --img-size: 150;
+  --img-size: 200;
 }
 
 .carousel-container {
   width: calc(var(--img-size) * 3px);
+  height: calc(var(--img-size) * 3 / 4 * 1px + 48px);
   margin: 30px auto;
   border: 0px solid #000;
   overflow: hidden;
@@ -122,9 +105,14 @@ export default {
 }
 .carousel-slide {
   display: flex;
-  width: 100%;
-  height: calc(var(--img-size) * 1px);
+  height: calc(var(--img-size) * 3 / 4 * 1px);
+  width: calc(var(--img-size) * 1px);
 }
+.oneSlide {
+  height: calc(var(--img-size) * 3 / 4 * 1px);
+  width: calc(var(--img-size) * 1px);
+}
+
 #prevBtn {
   position: absolute;
   top: 50%;

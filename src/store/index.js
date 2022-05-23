@@ -161,9 +161,27 @@ export default new Vuex.Store({
           },
         })
           .then((res) => {
-            for (let video of res.data) {
-              video.title = lodash.unescape(video.title);
-            }
+            const ans = [
+              JSON.parse(JSON.stringify(res.data[6])),
+              JSON.parse(JSON.stringify(res.data[7])),
+              JSON.parse(JSON.stringify(res.data[8])),
+              ...res.data.slice(0, 9),
+              JSON.parse(JSON.stringify(res.data[0])),
+              JSON.parse(JSON.stringify(res.data[1])),
+              JSON.parse(JSON.stringify(res.data[2])),
+            ];
+            let cnt = 0;
+            ans.forEach((element) => {
+              cnt++;
+              element.idx = cnt;
+              if (cnt < 4) element.last = true;
+              else element.last = false;
+              if (cnt > 12) element.first = true;
+              else element.first = false;
+              element.title = lodash.unescape(element.title); //title decoding
+            });
+            res.data = ans;
+
             console.log(res);
             commit("GET_RECOMMEND", res.data);
             resolve();

@@ -88,7 +88,7 @@ export default {
       if (isIntersecting) {
         // console.log(isIntersecting);
         if (this.current == this.loaded) {
-          this.getPhotos(); //무한히 같은 영상 목록 로드
+          // this.getPhotos(); //무한히 같은 영상 목록 로드
         } else {
           this.addFromLoaded();
         }
