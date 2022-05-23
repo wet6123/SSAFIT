@@ -14,6 +14,12 @@ export default new Vuex.Store({
     videos: [],
     video: {},
 
+    // 추천 비디오 관련
+    recommend: [],
+
+    // 찜 기록 관련
+    liked: [],
+
     // 시청 기록 관련
     watched: [],
 
@@ -29,10 +35,16 @@ export default new Vuex.Store({
     checkedEmail: false, // eamil 중복체크완료 여부
     compare_id: "", // 중복확인 완료 id값 임시저장
     compare_email: "", // 중복확인 완료 email값 임시저장
+    // 비밀번호 재설정 관련
+    isAuthPw: false, // 재설정 권한
+    tmp_userid: "", // 임시 저장 아이디
   },
   getters: {
     getIsLogin(state) {
       return state.isLogin;
+    },
+    getPwAuth(state) {
+      return state.isAuthPw;
     },
   },
   mutations: {
@@ -42,6 +54,16 @@ export default new Vuex.Store({
     },
     GET_VIDEO(state, payload) {
       state.video = payload;
+    },
+
+    // 추천 비디오 관련
+    GET_RECOMMEND(state, payload) {
+      state.recommend = payload;
+    },
+
+    // 찜 기록 관련
+    GET_LIKED(state, payload) {
+      state.liked = payload;
     },
 
     // 시청 기록 관련
@@ -88,38 +110,18 @@ export default new Vuex.Store({
       state.checkedEmail = false;
       state.compare_email = "";
     },
+    // 비밀번호 재설정 권한
+    SET_AUTH_PW_T(state) {
+      state.isAuthPw = true;
+    },
+    SET_AUTH_PW_F(state) {
+      state.isAuthPw = false;
+    },
+    TMP_USER_ID(state, id) {
+      state.tmp_userid = id;
+    },
   },
   actions: {
-    getWatched({ commit }, payload) {
-      return new Promise((resolve, reject) => {
-        let params = null;
-
-        if (payload) {
-          params = payload;
-        }
-        const API_URL = `${REST_API}/video/watched`; // 백엔드 참고
-        axios({
-          url: API_URL,
-          method: "GET",
-          params,
-          headers: {
-            "access-token": localStorage.getItem("access-token"),
-          },
-        })
-          .then((res) => {
-            for (let video of res.data) {
-              video.title = lodash.unescape(video.title);
-            }
-            console.log(res);
-            commit("GET_WATCHED", res.data);
-            resolve();
-          })
-          .catch((err) => {
-            console.log(err);
-            reject();
-          });
-      });
-    },
     //비디오 관련
     getVideos({ commit }, payload) {
       return new Promise((resolve, reject) => {
@@ -163,6 +165,120 @@ export default new Vuex.Store({
         .catch((err) => {
           console.log(err);
         });
+    },
+
+    //추천 비디오 관련
+    getRecommend({ commit }, payload) {
+      return new Promise((resolve, reject) => {
+        let params = null;
+
+        if (payload) {
+          params = payload;
+        }
+        const API_URL = `${REST_API}/video/recommended`; // 백엔드 참고
+        axios({
+          url: API_URL,
+          method: "GET",
+          params,
+          headers: {
+            "access-token": localStorage.getItem("access-token"),
+          },
+        })
+          .then((res) => {
+            const ans = [
+              JSON.parse(JSON.stringify(res.data[6])),
+              JSON.parse(JSON.stringify(res.data[7])),
+              JSON.parse(JSON.stringify(res.data[8])),
+              ...res.data.slice(0, 9),
+              JSON.parse(JSON.stringify(res.data[0])),
+              JSON.parse(JSON.stringify(res.data[1])),
+              JSON.parse(JSON.stringify(res.data[2])),
+            ];
+            let cnt = 0;
+            ans.forEach((element) => {
+              cnt++;
+              element.idx = cnt;
+              if (cnt < 4) element.last = true;
+              else element.last = false;
+              if (cnt > 12) element.first = true;
+              else element.first = false;
+              element.title = lodash.unescape(element.title); //title decoding
+            });
+            res.data = ans;
+
+            console.log(res);
+            commit("GET_RECOMMEND", res.data);
+            resolve();
+          })
+          .catch((err) => {
+            console.log(err);
+            reject();
+          });
+      });
+    },
+
+    //찜 기록 관련
+    getLiked({ commit }, payload) {
+      return new Promise((resolve, reject) => {
+        let params = null;
+
+        if (payload) {
+          params = payload;
+        }
+        const API_URL = `${REST_API}/video/liked`; // 백엔드 참고
+        axios({
+          url: API_URL,
+          method: "GET",
+          params,
+          headers: {
+            "access-token": localStorage.getItem("access-token"),
+          },
+        })
+          .then((res) => {
+            for (let video of res.data) {
+              video.title = lodash.unescape(video.title);
+            }
+            console.log(res);
+            commit("GET_LIKED", res.data);
+            resolve();
+          })
+          .catch((err) => {
+            console.log(err);
+            reject();
+          });
+      });
+    },
+
+    //시청 기록 관련
+    getWatched({ commit }, payload) {
+      return new Promise((resolve, reject) => {
+        let params = null;
+
+        if (payload) {
+          params = payload;
+        }
+        const API_URL = `${REST_API}/video/watched`; // 백엔드 참고
+        axios({
+          url: API_URL,
+          method: "GET",
+          params,
+          headers: {
+            "access-token": localStorage.getItem("access-token"),
+          },
+        })
+          .then((res) => {
+            for (let video of res.data) {
+              video.title = lodash.unescape(video.title);
+            }
+            console.log(res);
+            commit("GET_WATCHED", res.data);
+            resolve();
+          })
+          .catch((err) => {
+            console.log(err);
+            reject();
+          });
+      });
     },
 
     //리뷰 관련
@@ -346,7 +462,7 @@ export default new Vuex.Store({
           console.log(err);
         });
     },
-    // 아이디찾기
+    // 아이디, 비밀번호 찾기
     getUserId(context, user) {
       context;
       const API_URL = `${REST_API}/user/find-id`;
@@ -362,6 +478,42 @@ export default new Vuex.Store({
         .catch((err) => {
           console.log(err);
           alert(`일치하는 회원 정보가 없습니다.`);
+        });
+    },
+    getAuthPw({ commit }, user) {
+      const API_URL = `${REST_API}/user/change-pw/auth`;
+      axios({
+        url: API_URL,
+        method: "GET",
+        params: user,
+      })
+        .then((res) => {
+          console.log(res);
+          commit("SET_AUTH_PW_T");
+          commit("TMP_USER_ID", user.userid);
+          router.push({ name: "userpw" });
+        })
+        .catch((err) => {
+          console.log(err);
+          alert(`일치하는 회원 정보가 없습니다.`);
+        });
+    },
+    setPw({commit}, user) {
+      commit;
+      const API_URL = `${REST_API}/user/change-pw`;
+      axios({
+        url: API_URL,
+        method: "PUT",
+        params: user,
+      })
+        .then((res) => {
+          console.log(res);
+          alert("비밀번호 재설정이 완료되었습니다.");
+          router.push({ name: "userlogin" });
+        })
+        .catch((err) => {
+          console.log(err);
+          alert(`잘못된 요청입니다.`);
         });
     },
   },

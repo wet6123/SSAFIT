@@ -1,6 +1,6 @@
 <template>
   <div style="max-width: 1190px">
-    <div style="display: flex; flex-wrap: wrap">
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between">
       <router-link
         v-for="(photo, idx) in shownPhotos"
         v-bind:key="idx"
@@ -52,6 +52,7 @@ export default {
   computed: {
     ...mapState(["videos"]), //여기에 state 더 불러와줘야함
     ...mapState(["watched"]), //여기에 state 더 불러와줘야함
+    ...mapState(["liked"]), //여기에 state 더 불러와줘야함
   },
   methods: {
     getPhotos: function () {
@@ -74,7 +75,16 @@ export default {
             if (video.part.includes(this.part)) {
               let { title, ...rest } = video;
               title = this.textLengthOverCut(title, 25, "...");
-              add.push({ title, ...rest });
+              add.unshift({ title, ...rest });
+            }
+          }
+        } else if (this.option.state == "liked") {
+          console.log("load liked");
+          for (let video of this.liked) {
+            if (video.part.includes(this.part)) {
+              let { title, ...rest } = video;
+              title = this.textLengthOverCut(title, 25, "...");
+              add.unshift({ title, ...rest });
             }
           }
         }
@@ -88,7 +98,7 @@ export default {
       if (isIntersecting) {
         // console.log(isIntersecting);
         if (this.current == this.loaded) {
-          this.getPhotos(); //무한히 같은 영상 목록 로드
+          // this.getPhotos(); //무한히 같은 영상 목록 로드
         } else {
           this.addFromLoaded();
         }

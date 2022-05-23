@@ -9,7 +9,7 @@
               type="text"
               id="userId"
               size="lg"
-              v-model="userid"
+              v-model="user.userid"
               placeholder="아이디를 입력하세요."
               trim></b-form-input>
           </b-form-group>
@@ -18,7 +18,7 @@
               type="text"
               id="userName"
               size="lg"
-              v-model="nickname"
+              v-model="user.nickname"
               placeholder="닉네임을 입력하세요."
               trim></b-form-input>
           </b-form-group>
@@ -27,9 +27,9 @@
               type="email"
               id="userEmail"
               size="lg"
-              v-model="email"
+              v-model="user.email"
               placeholder="이메일을 입력하세요."
-              trim>></b-form-input>
+              trim></b-form-input>
           </b-form-group>
           <br/>
           <b-button
