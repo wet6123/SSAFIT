@@ -14,6 +14,9 @@ export default new Vuex.Store({
     videos: [],
     video: {},
 
+    // 시청 기록 관련
+    watched: [],
+
     // 리뷰 관련
     reviews: [],
     review: {},
@@ -30,7 +33,7 @@ export default new Vuex.Store({
   getters: {
     getIsLogin(state) {
       return state.isLogin;
-    }
+    },
   },
   mutations: {
     // 비디오 관련
@@ -39,6 +42,11 @@ export default new Vuex.Store({
     },
     GET_VIDEO(state, payload) {
       state.video = payload;
+    },
+
+    // 시청 기록 관련
+    GET_WATCHED(state, payload) {
+      state.watched = payload;
     },
 
     // 리뷰 관련
@@ -82,6 +90,33 @@ export default new Vuex.Store({
     },
   },
   actions: {
+    getWatched({ commit }, payload) {
+      return new Promise((resolve, reject) => {
+        let params = null;
+
+        if (payload) {
+          params = payload;
+        }
+        const API_URL = `${REST_API}/video/watched`; // 백엔드 참고
+        axios({
+          url: API_URL,
+          method: "GET",
+          params,
+        })
+          .then((res) => {
+            for (let video of res.data) {
+              video.title = lodash.unescape(video.title);
+            }
+            console.log(res);
+            commit("GET_WATCHED", res.data);
+            resolve();
+          })
+          .catch((err) => {
+            console.log(err);
+            reject();
+          });
+      });
+    },
     //비디오 관련
     getVideos({ commit }, payload) {
       return new Promise((resolve, reject) => {
@@ -116,8 +151,8 @@ export default new Vuex.Store({
         url: API_URL,
         method: "GET",
         headers: {
-          "access-token": sessionStorage.getItem("access-token")
-        }
+          "access-token": sessionStorage.getItem("access-token"),
+        },
       })
         .then((res) => {
           commit("GET_VIDEO", res.data);
@@ -140,8 +175,8 @@ export default new Vuex.Store({
         method: "GET",
         params,
         headers: {
-          "access-token": localStorage.getItem("access-token")
-        }
+          "access-token": localStorage.getItem("access-token"),
+        },
       })
         .then((res) => {
           console.log(res);
@@ -219,14 +254,13 @@ export default new Vuex.Store({
       })
         .then((res) => {
           console.log(res);
-          if(res.data.message == "success") {
+          if (res.data.message == "success") {
             //commit("USER_LOGIN");
             localStorage.setItem("access-token", res.data["access-token"]);
-            dispatch("getUserInfo")
+            dispatch("getUserInfo");
             //router.push({ name: "main" });
-          }
-          else {
-            alert("아이디 또는 비밀번호가 올바르지 않습니다.")
+          } else {
+            alert("아이디 또는 비밀번호가 올바르지 않습니다.");
           }
         })
         .catch((err) => {
@@ -235,13 +269,13 @@ export default new Vuex.Store({
     },
     getUserInfo({ commit }) {
       const API_URL = `${REST_API}/user/getUser`;
-      if(localStorage.getItem("access-token")) {
+      if (localStorage.getItem("access-token")) {
         axios({
           url: API_URL,
           method: "GET",
           headers: {
-            "access-token": localStorage.getItem("access-token")
-          }
+            "access-token": localStorage.getItem("access-token"),
+          },
         })
           .then((res) => {
             console.log(res);

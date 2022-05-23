@@ -51,17 +51,31 @@ export default {
   },
   computed: {
     ...mapState(["videos"]), //여기에 state 더 불러와줘야함
+    ...mapState(["watched"]), //여기에 state 더 불러와줘야함
   },
   methods: {
     getPhotos: function () {
       this.$store.dispatch(this.option.action).then(() => {
-        console.log("load videos");
         let add = [];
         //data
         console.log(this.part);
-        for (let video of this.videos) {
-          if (video.part.includes(this.part)) {
-            add.push(video);
+        if (this.option.state == "videos") {
+          console.log("load videos");
+          for (let video of this.videos) {
+            if (video.part.includes(this.part)) {
+              let { title, ...rest } = video;
+              title = this.textLengthOverCut(title, 25, "...");
+              add.push({ title, ...rest });
+            }
+          }
+        } else if (this.option.state == "watched") {
+          console.log("load watched");
+          for (let video of this.watched) {
+            if (video.part.includes(this.part)) {
+              let { title, ...rest } = video;
+              title = this.textLengthOverCut(title, 25, "...");
+              add.push({ title, ...rest });
+            }
           }
         }
         this.photos = [...this.photos, ...add];
@@ -74,7 +88,7 @@ export default {
       if (isIntersecting) {
         // console.log(isIntersecting);
         if (this.current == this.loaded) {
-          this.getPhotos();
+          this.getPhotos(); //무한히 같은 영상 목록 로드
         } else {
           this.addFromLoaded();
         }
@@ -95,6 +109,20 @@ export default {
       this.loaded = 0;
       this.current = 0;
       this.getPhotos();
+    },
+    textLengthOverCut(txt, len, lastTxt) {
+      if (len == "" || len == null) {
+        // 기본값
+        len = 20;
+      }
+      if (lastTxt == "" || lastTxt == null) {
+        // 기본값
+        lastTxt = "...";
+      }
+      if (txt.length > len) {
+        txt = txt.substr(0, len) + lastTxt;
+      }
+      return txt;
     },
   },
   created() {
