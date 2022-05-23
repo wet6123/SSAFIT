@@ -44,9 +44,8 @@ export default {
   methods: {
     createReview() {
       let newReview = {
-        id: 0,
+        uid: 0,
         vid: this.video.id,
-        uid: this.userinfo.userid, //user id 수정할 부분
         rate: this.rating,
         content: this.content,
       };
