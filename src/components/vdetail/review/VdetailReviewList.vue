@@ -3,25 +3,28 @@
     <div v-if="reviews.length">
       <b-table-simple hover responsive>
         <b-tbody>
-          <b-tr v-for="review in reviews" :key="review.id">
-            <b-td>(프로필)</b-td>
-            <b-td>{{ userinfo.nickname }}</b-td>
-            <b-td>
-              <b-tr>{{ review.content }}</b-tr>
-            </b-td>
-            <b-td><b-link :to="`/review/${review.id}`">답글</b-link> </b-td>
-            <div v-if="userinfo.userid === review.writer">
+          <b-tr v-for="(review, index) in reviews" :key="index">
+            <div :id="reviewid" @click="clickReview">
+              <b-td>(프로필)</b-td>
+              <b-td>{{ userinfo.nickname }}</b-td>
               <b-td>
-                <v-btn class="mx-2">
-                  <v-icon dark> mdi-pencil </v-icon>
-                </v-btn>
-                <v-btn class="mx-2">
-                  <v-icon dark> mdi-delete </v-icon>
-                </v-btn>
+                <b-tr>{{ review.content }}</b-tr>
+                <b-tr>{{ userinfo.id }}</b-tr>
+                <b-tr>{{ review.uid }}</b-tr>
               </b-td>
+              <b-td><b-link :to="`/review/${review.id}`">답글</b-link> </b-td>
+              <div v-if="userinfo.id === review.uid">
+                <b-td>
+                  <v-btn class="mx-2">
+                    <v-icon dark> mdi-pencil </v-icon>
+                  </v-btn>
+                  <v-btn class="mx-2">
+                    <v-icon dark> mdi-delete </v-icon>
+                  </v-btn>
+                </b-td>
+              </div>
+              <div v-else><v-btn class="mx-2"> 신고 </v-btn></div>
             </div>
-            <div v-else><v-btn class="mx-2"> 신고하기 </v-btn></div>
-            <router-view />
           </b-tr>
         </b-tbody>
       </b-table-simple>
@@ -35,26 +38,25 @@ import { mapState } from "vuex";
 
 export default {
   name: "VdetailReviewList",
-  //   data() {
-  //     //   createReply: {false};
-  //   },
+  data() {
+    return {
+      reviewid: "",
+    };
+  },
   computed: {
     ...mapState(["reviews", "userinfo"]),
   },
   methods: {
+    getReview() {},
     deleteReview() {
-      let newReview = {
-        uid: 0,
-        vid: this.video.id,
-        rate: this.rating,
-        content: this.content,
-      };
-
-      this.$store.dispatch("createReview", newReview);
+      this.$store.dispatch("deleteReview");
       this.content = "";
     },
     setRating: function (rating) {
       this.rating = rating;
+    },
+    clickReview() {
+      this.reviewid = document.getElementById();
     },
   },
 

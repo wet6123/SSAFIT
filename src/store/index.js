@@ -36,8 +36,10 @@ export default new Vuex.Store({
     compare_id: "", // 중복확인 완료 id값 임시저장
     compare_email: "", // 중복확인 완료 email값 임시저장
     // 비밀번호 재설정 관련
-    isAuthPw: false, // 재설정 권한
+    isAuthPw: false, // 비밀번호 재설정 권한
     tmp_userid: "", // 임시 저장 아이디
+    // 프로필 재설정 관련
+    isAuthProfile: false, // 프로필 재설정 권한 
   },
   getters: {
     getIsLogin(state) {
@@ -119,6 +121,13 @@ export default new Vuex.Store({
     },
     TMP_USER_ID(state, id) {
       state.tmp_userid = id;
+    },
+    // 프로필 변경 권한
+    SET_AUTH_PROFILE_T(state) {
+      state.isAuthProfile = true;
+    },
+    SET_AUTH_PROFILE_F(state) {
+      state.isAuthProfile = false;
     },
   },
   actions: {
@@ -306,7 +315,7 @@ export default new Vuex.Store({
         });
     },
     getReview({ commit }, id) {
-      const API_URL = `${REST_API}/review/all/${id.vid}/${id.uid}`; // 백엔드 참고
+      const API_URL = `${REST_API}/review/${id}`; // 백엔드 참고
       axios({
         url: API_URL,
         method: "GET",
@@ -516,6 +525,32 @@ export default new Vuex.Store({
           console.log(res);
           alert("비밀번호 재설정이 완료되었습니다.");
           router.push({ name: "userlogin" });
+        })
+        .catch((err) => {
+          console.log(err);
+          alert(`잘못된 요청입니다.`);
+        });
+    },
+    // 프로필 변경 관련
+    getAuthProfile({ commit }, pw) {
+      const API_URL = `${REST_API}/user/info/auth`;
+      axios({
+        url: API_URL,
+        method: "POST",
+        params: pw,
+        headers: {
+          "access-token": localStorage.getItem("access-token"),
+        },
+      })
+        .then((res) => {
+          console.log(res);
+          if(res.data == "success") {
+            commit("SET_AUTH_PROFILE_T");
+            router.push({ name: "memberedit" });
+          }
+          else {
+            alert("비밀번호가 일치하지 않습니다.");
+          }
         })
         .catch((err) => {
           console.log(err);
