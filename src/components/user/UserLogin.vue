@@ -67,6 +67,9 @@ export default {
       }
       else {
         this.$store.dispatch('userLogin', this.user)
+        this.user.userid = "";
+        this.user.pw = "";
+        document.querySelector("#userID").focus();
       }
     },
     moveToSignin() {

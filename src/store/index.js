@@ -20,14 +20,18 @@ export default new Vuex.Store({
 
     // 로그인 관련
     isLogin: false, // 로그인 상태
-    userinfo: {},
+    userinfo: {}, // 로그인된 user의 정보
     // 회원가입 관련
     checkedId: false, // id 중복체크완료 여부
     checkedEmail: false, // eamil 중복체크완료 여부
     compare_id: "", // 중복확인 완료 id값 임시저장
     compare_email: "", // 중복확인 완료 email값 임시저장
   },
-  getters: {},
+  getters: {
+    getIsLogin(state) {
+      return state.isLogin;
+    }
+  },
   mutations: {
     // 비디오 관련
     GET_VIDEOS(state, payload) {
@@ -52,12 +56,14 @@ export default new Vuex.Store({
     },
 
     // 로그인 관련
-    USER_LOGIN(state) {
+    USER_LOGIN(state, user) {
       state.isLogin = true;
+      state.userinfo = user;
     },
     //로그아웃 관련
     USER_LOGOUT(state) {
       state.isLogin = false;
+      state.userinfo = {};
     },
     // 회원가입관련
     CHECK_DUPL_ID(state, userid) {
@@ -133,6 +139,9 @@ export default new Vuex.Store({
         url: API_URL,
         method: "GET",
         params,
+        headers: {
+          "access-token": localStorage.getItem("access-token")
+        }
       })
         .then((res) => {
           console.log(res);
@@ -201,7 +210,7 @@ export default new Vuex.Store({
     },
 
     // 로그인 관련
-    userLogin({ commit }, user) {
+    userLogin({ dispatch }, user) {
       const API_URL = `${REST_API}/user/login`;
       axios({
         url: API_URL,
@@ -210,13 +219,39 @@ export default new Vuex.Store({
       })
         .then((res) => {
           console.log(res);
-          commit("USER_LOGIN");
-          sessionStorage.setItem("access-token", res.data["access-token"]);
-          router.push({ name: "main" });
+          if(res.data.message == "success") {
+            //commit("USER_LOGIN");
+            localStorage.setItem("access-token", res.data["access-token"]);
+            dispatch("getUserInfo")
+            //router.push({ name: "main" });
+          }
+          else {
+            alert("아이디 또는 비밀번호가 올바르지 않습니다.")
+          }
         })
         .catch((err) => {
           console.log(err);
         });
+    },
+    getUserInfo({ commit }) {
+      const API_URL = `${REST_API}/user/getUser`;
+      if(localStorage.getItem("access-token")) {
+        axios({
+          url: API_URL,
+          method: "GET",
+          headers: {
+            "access-token": localStorage.getItem("access-token")
+          }
+        })
+          .then((res) => {
+            console.log(res);
+            commit("USER_LOGIN", res.data);
+            router.push({ name: "main" });
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
     },
     // 회원가입 관련
     DuplicateId({ commit }, userid) {

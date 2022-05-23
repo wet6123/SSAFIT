@@ -20,10 +20,13 @@ import MemberEdit from "@/components/member/MemberEdit.vue";
 import VlistLike from "@/components/vlist/VlistLike.vue";
 import VlistWatched from "@/components/vlist/VlistWatched.vue";
 
+// vuex
+import store from "@/store/index.js";
+
 Vue.use(VueRouter);
 
 const requireAuth = () => (to, from, next) => {
-  if (sessionStorage.getItem("access-token")) {
+  if (store.getters.getIsLogin) {
     return next();
   }
   next("/user/login");

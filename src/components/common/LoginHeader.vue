@@ -4,6 +4,7 @@
       <v-app-bar app color="white" flat>
         <a href="/" class="ssafit"> &nbsp;SSAFIT </a>
         <v-spacer></v-spacer>
+        <h6 class="mt-3">{{userinfo.nickname}}님 안녕하세요!</h6>
         <v-menu left bottom>
           <template v-slot:activator="{ on, attrs }">
             <v-btn icon v-bind="attrs" v-on="on">
@@ -87,6 +88,8 @@
 </template>
 
 <script>
+import {mapState} from 'vuex';
+
 export default {
   data: () => ({
     links: [
@@ -115,9 +118,12 @@ export default {
       },
     ],
   }),
+  computed: {
+    ...mapState(['userinfo'])
+  },
   methods: {
     userLogout() {
-      sessionStorage.removeItem("access-token");
+      localStorage.removeItem("access-token");
       this.$store.commit("USER_LOGOUT");
       this.$router.push({ name: "main" });
     },
