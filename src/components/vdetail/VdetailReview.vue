@@ -5,11 +5,13 @@
       <h4>{{ nums }}개</h4>
     </div>
     <hr />
-    <vdetail-review-create />
-    <!-- <div v-if="로그인상태">
-            리뷰 작성
-        </div> -->
-    <vdetail-review-list></vdetail-review-list>
+    <div class="container">
+      <vdetail-review-create />
+      <!-- <div v-if="로그인상태">
+              리뷰 작성
+          </div> -->
+      <vdetail-review-list></vdetail-review-list>
+    </div>
   </div>
 </template>
 
