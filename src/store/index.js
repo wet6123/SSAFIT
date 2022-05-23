@@ -458,13 +458,13 @@ export default new Vuex.Store({
           alert(`일치하는 회원 정보가 없습니다.`);
         });
     },
-    setPw({commit}, pw) {
+    setPw({commit}, user) {
       commit;
-      const API_URL = `${REST_API}/user/change-pw/${this.state.tmp_userid}`;
+      const API_URL = `${REST_API}/user/change-pw`;
       axios({
         url: API_URL,
         method: "PUT",
-        params: pw,
+        params: user,
       })
         .then((res) => {
           console.log(res);

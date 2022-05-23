@@ -44,6 +44,8 @@
 </template>
 
 <script>
+import {mapState} from 'vuex';
+
 export default {
   data() {
     return {
@@ -52,6 +54,8 @@ export default {
     };
   },
   computed: {
+      ...mapState(["tmp_userid"]),
+
     // 유효성 검사
     validPw() {
       return this.pw.length > 3 && this.pw.length < 13;
@@ -71,7 +75,8 @@ export default {
   },
   methods: {
     setPw() {
-        this.$store.dispatch("setPw", this.pw);
+        let user = {userid: this.tmp_userid, pw: this.pw};
+        this.$store.dispatch("setPw", user);
     },
   },
   created() {
