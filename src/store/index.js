@@ -306,7 +306,7 @@ export default new Vuex.Store({
         });
     },
     getReview({ commit }, id) {
-      const API_URL = `${REST_API}/review/all/${id.vid}/${id.uid}`; // 백엔드 참고
+      const API_URL = `${REST_API}/review/${id}`; // 백엔드 참고
       axios({
         url: API_URL,
         method: "GET",
