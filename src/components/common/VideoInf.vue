@@ -1,6 +1,6 @@
 <template>
   <div style="max-width: 1190px">
-    <div style="display: flex; flex-wrap: wrap">
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between">
       <router-link
         v-for="(photo, idx) in shownPhotos"
         v-bind:key="idx"
