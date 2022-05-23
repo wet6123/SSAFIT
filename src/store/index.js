@@ -14,6 +14,9 @@ export default new Vuex.Store({
     videos: [],
     video: {},
 
+    // 추천 비디오 관련
+    recommend: [],
+
     // 시청 기록 관련
     watched: [],
 
@@ -42,6 +45,11 @@ export default new Vuex.Store({
     },
     GET_VIDEO(state, payload) {
       state.video = payload;
+    },
+
+    // 추천 비디오 관련
+    GET_RECOMMEND(state, payload) {
+      state.recommend = payload;
     },
 
     // 시청 기록 관련
@@ -90,36 +98,6 @@ export default new Vuex.Store({
     },
   },
   actions: {
-    getWatched({ commit }, payload) {
-      return new Promise((resolve, reject) => {
-        let params = null;
-
-        if (payload) {
-          params = payload;
-        }
-        const API_URL = `${REST_API}/video/watched`; // 백엔드 참고
-        axios({
-          url: API_URL,
-          method: "GET",
-          params,
-          headers: {
-            "access-token": localStorage.getItem("access-token"),
-          },
-        })
-          .then((res) => {
-            for (let video of res.data) {
-              video.title = lodash.unescape(video.title);
-            }
-            console.log(res);
-            commit("GET_WATCHED", res.data);
-            resolve();
-          })
-          .catch((err) => {
-            console.log(err);
-            reject();
-          });
-      });
-    },
     //비디오 관련
     getVideos({ commit }, payload) {
       return new Promise((resolve, reject) => {
@@ -163,6 +141,70 @@ export default new Vuex.Store({
         .catch((err) => {
           console.log(err);
         });
+    },
+
+    //추천 비디오 관련
+    getRecommend({ commit }, payload) {
+      return new Promise((resolve, reject) => {
+        let params = null;
+
+        if (payload) {
+          params = payload;
+        }
+        const API_URL = `${REST_API}/video/recommended`; // 백엔드 참고
+        axios({
+          url: API_URL,
+          method: "GET",
+          params,
+          headers: {
+            "access-token": localStorage.getItem("access-token"),
+          },
+        })
+          .then((res) => {
+            for (let video of res.data) {
+              video.title = lodash.unescape(video.title);
+            }
+            console.log(res);
+            commit("GET_RECOMMEND", res.data);
+            resolve();
+          })
+          .catch((err) => {
+            console.log(err);
+            reject();
+          });
+      });
+    },
+
+    //시청 기록 관련
+    getWatched({ commit }, payload) {
+      return new Promise((resolve, reject) => {
+        let params = null;
+
+        if (payload) {
+          params = payload;
+        }
+        const API_URL = `${REST_API}/video/watched`; // 백엔드 참고
+        axios({
+          url: API_URL,
+          method: "GET",
+          params,
+          headers: {
+            "access-token": localStorage.getItem("access-token"),
+          },
+        })
+          .then((res) => {
+            for (let video of res.data) {
+              video.title = lodash.unescape(video.title);
+            }
+            console.log(res);
+            commit("GET_WATCHED", res.data);
+            resolve();
+          })
+          .catch((err) => {
+            console.log(err);
+            reject();
+          });
+      });
     },
 
     //리뷰 관련
