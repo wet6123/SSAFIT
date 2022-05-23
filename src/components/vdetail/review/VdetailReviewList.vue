@@ -7,7 +7,7 @@
             <b-td>(프로필)</b-td>
             <b-td>
               <b-tr>
-                {{ review.writer }}
+                {{ review.userid }}
                 <b-icon icon="star-fill"></b-icon>
                 <b-icon icon="star-fill"></b-icon>
                 <b-icon icon="star-fill"></b-icon>
@@ -16,7 +16,15 @@
               </b-tr>
               <b-tr>{{ review.content }}</b-tr>
             </b-td>
-            <b-td><b-link :to="`/board/${review.id}`">답글</b-link></b-td>
+            <b-td><b-link :to="`/review/${review.id}`">답글</b-link> </b-td>
+            <b-td>
+              <v-btn class="mx-2">
+                <v-icon dark> mdi-pencil </v-icon>
+              </v-btn>
+              <v-btn class="mx-2">
+                <v-icon dark> mdi-delete </v-icon>
+              </v-btn>
+            </b-td>
             <router-view />
           </b-tr>
         </b-tbody>
@@ -35,14 +43,9 @@ export default {
   //     //   createReply: {false};
   //   },
   computed: {
-    ...mapState(["reviews", "video"]),
+    ...mapState(["reviews", "userinfo"]),
   },
-  created() {
-    const pathName = new URL(document.location).pathname.split("/");
-    const id = pathName[pathName.length - 1];
-    this.$store.dispatch("getReviews", id);
-    console.log(id);
-  },
+
   // methods: {
   //   search() {
   //     const payload = {

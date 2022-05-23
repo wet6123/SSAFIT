@@ -18,7 +18,9 @@
       </div>
     </div>
     <div class="btn">
-      <b-button variant="outline-success" @click="createReview">등록</b-button>
+      <b-button variant="outline-secondary" @click="createReview"
+        >등록</b-button
+      >
     </div>
   </v-container>
 </template>
@@ -34,7 +36,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(["video"]),
+    ...mapState(["video", "userinfo"]),
   },
   components: {
     StarRating,
@@ -44,7 +46,7 @@ export default {
       let newReview = {
         id: 0,
         vid: this.video.id,
-        uid: "hello", //user id 수정할 부분
+        uid: this.userinfo.userid, //user id 수정할 부분
         rate: this.rating,
         content: this.content,
       };
@@ -68,6 +70,7 @@ export default {
 .btn {
   display: flex;
   justify-content: flex-end;
+  margin-right: 20px;
 }
 .review-write {
   margin-left: 20px;
