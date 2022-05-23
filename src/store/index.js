@@ -306,10 +306,13 @@ export default new Vuex.Store({
         });
     },
     getReview({ commit }, id) {
-      const API_URL = `${REST_API}/review/par/${id}`; // 백엔드 참고
+      const API_URL = `${REST_API}/review/all/${id.vid}/${id.uid}`; // 백엔드 참고
       axios({
         url: API_URL,
         method: "GET",
+        headers: {
+          "access-token": localStorage.getItem("access-token"),
+        },
       })
         .then((res) => {
           commit("GET_REVIEW", res.data);
@@ -324,6 +327,9 @@ export default new Vuex.Store({
         url: API_URL,
         method: "POST",
         params: review,
+        headers: {
+          "access-token": localStorage.getItem("access-token"),
+        },
       })
         .then(() => {
           commit("CREATE_REVIEW", review);
@@ -498,7 +504,7 @@ export default new Vuex.Store({
           alert(`일치하는 회원 정보가 없습니다.`);
         });
     },
-    setPw({commit}, user) {
+    setPw({ commit }, user) {
       commit;
       const API_URL = `${REST_API}/user/change-pw`;
       axios({
