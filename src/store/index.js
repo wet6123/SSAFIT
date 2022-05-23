@@ -102,6 +102,9 @@ export default new Vuex.Store({
           url: API_URL,
           method: "GET",
           params,
+          headers: {
+            "access-token": localStorage.getItem("access-token"),
+          },
         })
           .then((res) => {
             for (let video of res.data) {
