@@ -52,6 +52,7 @@ export default {
   computed: {
     ...mapState(["videos"]), //여기에 state 더 불러와줘야함
     ...mapState(["watched"]), //여기에 state 더 불러와줘야함
+    ...mapState(["liked"]), //여기에 state 더 불러와줘야함
   },
   methods: {
     getPhotos: function () {
@@ -71,6 +72,15 @@ export default {
         } else if (this.option.state == "watched") {
           console.log("load watched");
           for (let video of this.watched) {
+            if (video.part.includes(this.part)) {
+              let { title, ...rest } = video;
+              title = this.textLengthOverCut(title, 25, "...");
+              add.unshift({ title, ...rest });
+            }
+          }
+        } else if (this.option.state == "liked") {
+          console.log("load liked");
+          for (let video of this.liked) {
             if (video.part.includes(this.part)) {
               let { title, ...rest } = video;
               title = this.textLengthOverCut(title, 25, "...");
