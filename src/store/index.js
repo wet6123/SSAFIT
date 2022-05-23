@@ -513,7 +513,7 @@ export default new Vuex.Store({
         })
         .catch((err) => {
           console.log(err);
-          alert(`에러`);
+          alert(`잘못된 요청입니다.`);
         });
     },
   },
