@@ -52,19 +52,35 @@ export default {
   },
   methods: {
     search(keyword) {
-      let ans = [];
+      let add = [];
       console.log(keyword);
       for (let video of this.videos) {
         if (video.title.toLowerCase().includes(keyword.toLowerCase())) {
-          ans.push(video);
+          let { title, ...rest } = video;
+          title = this.textLengthOverCut(title, 25, "...");
+          add.push({ title, ...rest });
         }
       }
-      this.result = ans;
+      this.result = add;
+    },
+    textLengthOverCut(txt, len, lastTxt) {
+      if (len == "" || len == null) {
+        // 기본값
+        len = 20;
+      }
+      if (lastTxt == "" || lastTxt == null) {
+        // 기본값
+        lastTxt = "...";
+      }
+      if (txt.length > len) {
+        txt = txt.substr(0, len) + lastTxt;
+      }
+      return txt;
     },
   },
   created() {
     this.$store.dispatch(this.option.action).then(() => {
-      this.result = this.videos;
+      this.search("");
     });
   },
 };
