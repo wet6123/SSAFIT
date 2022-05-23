@@ -74,7 +74,7 @@ export default {
             if (video.part.includes(this.part)) {
               let { title, ...rest } = video;
               title = this.textLengthOverCut(title, 25, "...");
-              add.push({ title, ...rest });
+              add.unshift({ title, ...rest });
             }
           }
         }
