@@ -107,7 +107,7 @@ export default {
     links3: [
       {
         title: "프로필 편집",
-        router: "/member/edit",
+        router: "/member/check",
         icon: "mdi-account-edit-outline",
       },
       { title: "찜리스트", router: "/vlist/like", icon: "mdi-cards-heart" },
