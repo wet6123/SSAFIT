@@ -33,6 +33,14 @@ const requireAuth = () => (to, from, next) => {
   alert("로그인이 필요한 서비스입니다.");
 };
 
+const setPWAuth = () => (to, from, next) => {
+  if (store.getters.getPwAuth) {
+    return next();
+  }
+  next("/user/check");
+  alert("본인확인이 필요합니다.");
+};
+
 const routes = [
   {
     path: "/",
@@ -68,6 +76,7 @@ const routes = [
         path: "pw",
         name: "userpw",
         component: UserPw,
+        beforeEnter: setPWAuth(),
       },
     ],
   },
