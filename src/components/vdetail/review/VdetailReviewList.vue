@@ -29,6 +29,7 @@
                   <v-text-field
                     v-model="content"
                     label="답글을 작성해주세요"
+                    @keyup.enter="createReply(review.id)"
                   ></v-text-field>
                 </b-col>
                 <b-col class="btn" cols="4">
