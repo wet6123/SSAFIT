@@ -12,6 +12,7 @@
           :star-size="20"
         ></star-rating>
         <v-text-field
+          @keyup.enter="createReview"
           v-model="content"
           label="리뷰를 작성해주세요"
         ></v-text-field>
@@ -46,7 +47,7 @@ export default {
       let newReview = {
         uid: 0,
         vid: this.video.id,
-        rate: this.rating,
+        rate: this.rating * 2,
         content: this.content,
         depth: 0,
       };
