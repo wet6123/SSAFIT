@@ -143,8 +143,8 @@ export default {
       this.content[index] = "";
     },
     deleteReview(id) {
-      this.$store.dispatch("deleteReview", id);
-      router;
+      let payload = {id: id, vid: this.video.id};
+      this.$store.dispatch("deleteReview", payload);
     },
 
     // getReview() {},

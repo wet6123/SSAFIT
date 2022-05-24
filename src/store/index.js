@@ -449,9 +449,8 @@ export default new Vuex.Store({
           console.log(err);
         });
     },
-    deleteReview(context, id) {
-      context;
-      const API_URL = `${REST_API}/review/delete/${id}`; // 백엔드 참고
+    deleteReview({dispatch}, payload) {
+      const API_URL = `${REST_API}/review/delete/${payload.id}`; // 백엔드 참고
       axios({
         url: API_URL,
         method: "DELETE",
@@ -460,7 +459,7 @@ export default new Vuex.Store({
         },
       })
         .then(() => {
-          router.push({ name: "main" });
+          dispatch("getReviews", payload.vid);
         })
         .catch((err) => {
           console.log(err);
