@@ -7,39 +7,43 @@
             (프로필)
           </b-td>
           <b-td>
-            <b-tr>
-              <b-td>{{ userinfo.nickname }}</b-td>
-              <b-td>{{ review.rate }}</b-td>
-            </b-tr>
+            <b-row>
+              <b-col>{{ review.writer }}</b-col>
+              <b-col>{{ review.rate }}</b-col>
+            </b-row>
             <b-tr>
               {{ review.content }}
             </b-tr>
             <b-tr class="review" :id="index+'p'" style="display: none">
-              <div>
+              <br />
+              <b-row>
+              <b-col cols="1">
                 <v-icon>mdi-account-circle</v-icon>
-              </div>
-              <div class="review-write">
+              </b-col>
+              <b-col class="review-write" cols="7">
                 <v-text-field
                   v-model="content"
                   label="답글을 작성해주세요"
                 ></v-text-field>
-              </div>
-              <div class="btn">
+              </b-col>
+              <b-col class="btn" cols="4">
+                <b-button variant="outline-secondary" @click="createReply(review.id)" class="btn-sm"
+                  >등록</b-button
+                >
                 <b-button
+                  class="btn-sm"
                   variant="outline-secondary"
                   @click="toggleCreateReply(index)"
                   >취소</b-button
                 >
-                <b-button variant="outline-secondary" @click="createReply"
-                  >등록</b-button
-                >
-              </div>
+              </b-col>
+              </b-row>
             </b-tr>
             <br/>
             <b-tr>
-            <b-link @click="[toggleShowReply(review.id), numOfReplies(review.id)]">답글 보기</b-link>
+            <b-link @click="toggleShowReply(review.id)">답글 {{replyNum[review.id]}}개</b-link>
             <div class="reply" :id="review.id" style="display: none">
-              <div v-if="nums[review.id] == 0">
+              <div v-if="replyNum[review.id] == 0">
                 등록된 답글이 없습니다.
               </div>
               <b-tr v-for="(reply, index) in replies" :key="index+'c'">
@@ -48,15 +52,15 @@
                     (프로필)
                   </b-td>
                   <b-td>
-                    <b-tr>{{ reply.nickname }}</b-tr>
+                    <b-tr>{{ reply.writer }}</b-tr>
                     <b-tr>{{ reply.content }}</b-tr>
                   </b-td>
                   <b-td>
                     <div v-if="userinfo.id === reply.uid">
-                        <v-btn class="mx-2">
+                        <v-btn small class="mx-2">
                           <v-icon dark> mdi-pencil </v-icon>
                         </v-btn>
-                        <v-btn class="mx-2">
+                        <v-btn small class="mx-2">
                           <v-icon dark> mdi-delete </v-icon>
                         </v-btn>
                       </div>
@@ -98,21 +102,9 @@ export default {
     };
   },
   computed: {
-    ...mapState(["video","reviews", "userinfo", "replies"]),
-    nums() {
-      return this.num;
-    }
+    ...mapState(["video","reviews", "userinfo", "replies", "replyNum"]),
   },
   methods: {
-    numOfReplies(reviewid) {
-      let cnt = 0;
-      for(let i=0; i < this.replies.length; i++) {
-         if(this.replies[i].re_id == reviewid)
-          cnt++;
-       }
-
-      this.num.splice(reviewid, 0, cnt);
-    },
     toggleCreateReply(index) {
       let e = document.getElementById(index);
       e.style.display = e.style.display != "none" ? "none" : "block";
@@ -121,12 +113,13 @@ export default {
       let e = document.getElementById(reviewid);
       e.style.display = e.style.display != "none" ? "none" : "block";
     },
-    createReply() {
+    createReply(re_id) {
       let newReply = {
         uid: 0,
         vid: this.video.id,
         content: this.content,
         depth: 1,
+        re_id,
       };
 
       this.$store.dispatch("createReview", newReply);

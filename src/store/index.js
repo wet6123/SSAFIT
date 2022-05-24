@@ -27,7 +27,7 @@ export default new Vuex.Store({
     reviews: [],
     review: {},
     replies: [],
-    reply: {},
+    replyNum: [],
 
     // 로그인 관련
     isLogin: false, // 로그인 상태
@@ -41,7 +41,7 @@ export default new Vuex.Store({
     isAuthPw: false, // 비밀번호 재설정 권한
     tmp_userid: "", // 임시 저장 아이디
     // 프로필 재설정 관련
-    isAuthProfile: false, // 프로필 재설정 권한
+    isAuthProfile: false, // 프로필 재설정 권한 
   },
   getters: {
     getIsLogin(state) {
@@ -69,12 +69,6 @@ export default new Vuex.Store({
     GET_LIKED(state, payload) {
       state.liked = payload;
     },
-    CREATE_LIKED(state, payload) {
-      state.liked.push(payload);
-    },
-    UPDATE_LIKED(state, payload) {
-      state.liked = payload;
-    },
 
     // 시청 기록 관련
     GET_WATCHED(state, payload) {
@@ -91,9 +85,21 @@ export default new Vuex.Store({
     GET_REPLIES(state, payload) { // 자식답글리스트
       state.replies = payload;
     },
-    CREATE_REVIEW(state, payload) {
-      state.reviews.push(payload);
+    RESET_REPLIES_NUM(state, payload) {
+      for(let i=0; i<payload.length; i++) {
+        state.replyNum[payload[i].id] = parseInt("0");
+        console.log(payload[i].id);
+      }
+    }
+    ,
+    SET_REPLIES_NUM(state, payload) {
+      for(let i=0; i < payload.length; i++) {
+         state.replyNum[payload[i].re_id]++;
+      }
     },
+    // CREATE_REVIEW(state, payload) {
+    //   state.reviews.push(payload);
+    // },
     UPDATE_REVIEW(state, payload) {
       state.review = payload;
     },
@@ -268,44 +274,6 @@ export default new Vuex.Store({
           });
       });
     },
-    createLiked({ commit }, payload) {
-      const API_URL = `${REST_API}/video/likes`; // 백엔드 참고
-      axios({
-        url: API_URL,
-        method: "POST",
-        params: payload,
-        headers: {
-          "access-token": localStorage.getItem("access-token"),
-        },
-      })
-        .then((res) => {
-          console.log("createLiked: " + res.data);
-          commit("CREATE_LIKED", payload);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    },
-    deleteLiked({ commit }, payload) {
-      {
-        commit;
-      }
-      const API_URL = `${REST_API}/video/likes/${payload.id}`; // 백엔드 참고
-      axios({
-        url: API_URL,
-        method: "DELETE",
-        params: payload,
-        headers: {
-          "access-token": localStorage.getItem("access-token"),
-        },
-      })
-        .then((res) => {
-          console.log("deleteLiked: " + res.data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    },
 
     //시청 기록 관련
     getWatched({ commit }, payload) {
@@ -358,6 +326,7 @@ export default new Vuex.Store({
         .then((res) => {
           console.log(res);
           commit("GET_REVIEWS", res.data);
+          commit("RESET_REPLIES_NUM", res.data);
         })
         .catch((err) => {
           console.log(err);
@@ -397,12 +366,13 @@ export default new Vuex.Store({
         .then((res) => {
           console.log(res);
           commit("GET_REPLIES", res.data);
+          commit("SET_REPLIES_NUM", res.data);
         })
         .catch((err) => {
           console.log(err);
         });
     },
-    createReview({ commit }, review) {
+    createReview({dispatch}, review) {
       const API_URL = `${REST_API}/review/write`; // 백엔드 참고
       axios({
         url: API_URL,
@@ -413,7 +383,8 @@ export default new Vuex.Store({
         },
       })
         .then(() => {
-          commit("CREATE_REVIEW", review);
+          dispatch("getReviews", review.vid);
+          dispatch("getReplies", review.vid);
         })
         .catch((err) => {
           console.log(err);
@@ -616,10 +587,11 @@ export default new Vuex.Store({
       })
         .then((res) => {
           console.log(res);
-          if (res.data == "success") {
+          if(res.data == "success") {
             commit("SET_AUTH_PROFILE_T");
             router.push({ name: "memberedit" });
-          } else {
+          }
+          else {
             alert("비밀번호가 일치하지 않습니다.");
           }
         })
