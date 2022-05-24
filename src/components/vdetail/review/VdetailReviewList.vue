@@ -9,7 +9,7 @@
               <b-col>{{ review.writer }}</b-col>
               <b-col
                 ><star-rating
-                  :rating="review.rate"
+                  :rating="review.rate / 2"
                   :read-only="true"
                   :increment="0.5"
                   :star-size="20"
