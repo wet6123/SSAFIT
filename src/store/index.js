@@ -39,7 +39,7 @@ export default new Vuex.Store({
     isAuthPw: false, // 비밀번호 재설정 권한
     tmp_userid: "", // 임시 저장 아이디
     // 프로필 재설정 관련
-    isAuthProfile: false, // 프로필 재설정 권한 
+    isAuthProfile: false, // 프로필 재설정 권한
   },
   getters: {
     getIsLogin(state) {
@@ -65,6 +65,12 @@ export default new Vuex.Store({
 
     // 찜 기록 관련
     GET_LIKED(state, payload) {
+      state.liked = payload;
+    },
+    CREATE_LIKED(state, payload) {
+      state.liked.push(payload);
+    },
+    UPDATE_LIKED(state, payload) {
       state.liked = payload;
     },
 
@@ -256,6 +262,44 @@ export default new Vuex.Store({
             reject();
           });
       });
+    },
+    createLiked({ commit }, payload) {
+      const API_URL = `${REST_API}/video/likes`; // 백엔드 참고
+      axios({
+        url: API_URL,
+        method: "POST",
+        params: payload,
+        headers: {
+          "access-token": localStorage.getItem("access-token"),
+        },
+      })
+        .then((res) => {
+          console.log("createLiked: " + res.data);
+          commit("CREATE_LIKED", payload);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    deleteLiked({ commit }, payload) {
+      {
+        commit;
+      }
+      const API_URL = `${REST_API}/video/likes/${payload.id}`; // 백엔드 참고
+      axios({
+        url: API_URL,
+        method: "DELETE",
+        params: payload,
+        headers: {
+          "access-token": localStorage.getItem("access-token"),
+        },
+      })
+        .then((res) => {
+          console.log("deleteLiked: " + res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
 
     //시청 기록 관련
@@ -544,11 +588,10 @@ export default new Vuex.Store({
       })
         .then((res) => {
           console.log(res);
-          if(res.data == "success") {
+          if (res.data == "success") {
             commit("SET_AUTH_PROFILE_T");
             router.push({ name: "memberedit" });
-          }
-          else {
+          } else {
             alert("비밀번호가 일치하지 않습니다.");
           }
         })
