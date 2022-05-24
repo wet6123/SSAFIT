@@ -1,8 +1,7 @@
 <template>
   <div class="container">
     <div>
-      <h2>유저 리뷰</h2>
-      <h4>{{ nums }}개</h4>
+      <h2>유저 리뷰 <span>{{ nums }}개</span></h2>
     </div>
     <hr />
     <div class="container">
