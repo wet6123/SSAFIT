@@ -2,10 +2,13 @@
   <v-app>
     <div>
       <v-app-bar app color="white" flat>
-        <a href="/" class="ssafit">
-          &nbsp;SSAFIT &nbsp;
-          <img src="https://img.icons8.com/ios/50/000000/exercise.png"
-        /></a>
+        <a href="/" class="ssafit"> &nbsp;SSAFIT &nbsp; </a
+        ><img
+          style="width: 80px"
+          class="container"
+          @click="move()"
+          src="https://img.icons8.com/ios/50/000000/exercise.png"
+        />
         <v-spacer></v-spacer>
         <h6 class="mt-3">
           <b-icon icon="star-fill" animation="fade" font-scale="1"></b-icon>
@@ -138,6 +141,9 @@ export default {
       this.$store.commit("USER_LOGOUT");
       this.$router.push({ name: "main" });
     },
+    move() {
+      document.querySelector(".container").classList.add("go");
+    },
   },
 };
 </script>
@@ -164,5 +170,9 @@ export default {
 .login {
   color: white;
   font-size: 20px;
+}
+.go {
+  transform: translateX(300px) scale(0.7, 1);
+  transition-duration: 5s;
 }
 </style>
