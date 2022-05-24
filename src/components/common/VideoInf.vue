@@ -55,6 +55,33 @@ export default {
     ...mapState(["liked"]), //여기에 state 더 불러와줘야함
   },
   methods: {
+    // 찜 버튼 누르기
+    like(id) {
+      this.$store.dispatch("getLiked").then(() => {
+        let flag = true;
+        for (let video of this.liked) {
+          if (video.id === id) {
+            flag = false;
+            break;
+          }
+        }
+        if (flag) {
+          this.$store.dispatch("createLiked", { id: id });
+          alert("찜 리스트에 추가되었습니다.");
+        } else {
+          this.$store.dispatch("deleteLiked", { id: id });
+          let idx = 0;
+          for (let photo of this.shownPhotos) {
+            if (photo.id === id) {
+              this.shownPhotos.splice(idx, 1);
+              break;
+            }
+            idx++;
+          }
+          alert("찜 리스트에서 삭제되었습니다.");
+        }
+      });
+    },
     // 사진 가져와서 출력
     getPhotos: function () {
       this.$store.dispatch(this.option.action).then(() => {
