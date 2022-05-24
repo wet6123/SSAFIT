@@ -52,7 +52,7 @@ export default new Vuex.Store({
     },
     getProfileAuth(state) {
       return state.isAuthProfile;
-    }
+    },
   },
   mutations: {
     // 비디오 관련
@@ -449,16 +449,18 @@ export default new Vuex.Store({
           console.log(err);
         });
     },
-    deleteReview(context, reviewid) {
+    deleteReview(context, id) {
       context;
-      const API_URL = `${REST_API}/review/delete`; // 백엔드 참고
+      const API_URL = `${REST_API}/review/delete/${id}`; // 백엔드 참고
       axios({
         url: API_URL,
         method: "DELETE",
-        params: reviewid,
+        headers: {
+          "access-token": localStorage.getItem("access-token"),
+        },
       })
         .then(() => {
-          router.push({ name: "vdetail" });
+          router.push({ name: "main" });
         })
         .catch((err) => {
           console.log(err);
@@ -657,7 +659,7 @@ export default new Vuex.Store({
           console.log(res);
           alert("회원정보 수정이 완료되었습니다.");
           commit("DUPL_RESET");
-          alert("다시 로그인 해주세요!")
+          alert("다시 로그인 해주세요!");
           //dispatch 로그아웃(스토리지 포함 수정)
         })
         .catch((err) => {

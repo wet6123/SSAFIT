@@ -42,7 +42,7 @@
                   <b-button
                     class="btn-sm"
                     variant="outline-secondary"
-                    @click="toggleCreateReply(index+'p')"
+                    @click="toggleCreateReply(index + 'p')"
                     >취소</b-button
                   >
                 </b-col>
@@ -69,7 +69,11 @@
                         <v-btn small class="mx-2">
                           <v-icon dark> mdi-pencil </v-icon>
                         </v-btn>
-                        <v-btn small class="mx-2">
+                        <v-btn
+                          small
+                          class="mx-2"
+                          @click="deleteReview(reply.id)"
+                          >{{ reply.id }}
                           <v-icon dark> mdi-delete </v-icon>
                         </v-btn>
                       </div>
@@ -87,8 +91,9 @@
               <v-btn class="mx-2">
                 <v-icon dark> mdi-pencil </v-icon>
               </v-btn>
-              <v-btn class="mx-2">
-                <v-icon dark> mdi-delete </v-icon>
+              <v-btn class="mx-2" @click="deleteReview(review.id)"
+                >{{ review.id }}
+                <v-icon dark>mdi-delete </v-icon>
               </v-btn>
             </div>
           </b-td>
@@ -137,6 +142,10 @@ export default {
       this.$store.dispatch("createReview", newReply);
       this.content[index] = "";
     },
+    deleteReview(id) {
+      this.$store.dispatch("deleteReview", id);
+      router;
+    },
 
     // getReview() {},
     // deleteReview() {
@@ -151,7 +160,7 @@ export default {
     // const pathName = new URL(document.location).pathname.split("/");
     // const id = pathName[pathName.length - 1];
     // this.$store.dispatch("getReplies", id);
-    for(let i=0; i<this.reviews.length; i++) {
+    for (let i = 0; i < this.reviews.length; i++) {
       this.content[i] = "";
     }
   },
