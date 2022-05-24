@@ -15,7 +15,11 @@
         <v-menu left bottom>
           <template v-slot:activator="{ on, attrs }">
             <v-btn icon v-bind="attrs" v-on="on">
-              <v-icon>mdi-account-circle</v-icon>
+              <img
+                style="border: 2px solid; border-radius: 70%"
+                :src="require(`@/assets/images/${userinfo.profile}.png`)"
+                width="40px"
+              />
             </v-btn>
           </template>
 
