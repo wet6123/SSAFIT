@@ -14,19 +14,17 @@
       <input class="btn" type="button" value="검색" />
     </form>
     <!-- 영상 목록 -->
-    <div style="display: flex; flex-wrap: wrap" class="cardContainer">
+    <div class="cardContainer">
       <span
         v-for="(photo, idx) in result"
         v-bind:key="idx"
         :class="[{ card: photo.url }, { notCard: !photo.url }]"
       >
         <router-link :to="`/vdetail/${photo.id}`">
-          <div>
-            <img :src="photo.url" alt="" />
-          </div>
+          <img :src="photo.url" alt="" />
           <span>{{ photo.title }}</span>
         </router-link>
-        <button>
+        <button @click="like(photo.id)">
           <font-awesome-icon icon="fa-solid fa-heart" id="likeBtn" />
         </button>
       </span>
@@ -51,8 +49,37 @@ export default {
   props: { option: Object, rerender: Number },
   computed: {
     ...mapState(["videos"]),
+    ...mapState(["liked"]),
   },
   methods: {
+    // 찜 버튼 누르기
+    like(id) {
+      this.$store.dispatch("getLiked").then(() => {
+        let flag = true;
+        for (let video of this.liked) {
+          if (video.id === id) {
+            flag = false;
+            break;
+          }
+        }
+        if (flag) {
+          this.$store.dispatch("createLiked", { id: id });
+          alert("찜 리스트에 추가되었습니다.");
+        } else {
+          this.$store.dispatch("deleteLiked", { id: id });
+          let idx = 0;
+          for (let photo of this.result) {
+            if (photo.id === id) {
+              this.result.splice(idx, 1);
+              break;
+            }
+            idx++;
+          }
+          alert("찜 리스트에서 삭제되었습니다.");
+        }
+      });
+    },
+    //검색
     search(keyword) {
       let add = [];
       console.log(keyword);
