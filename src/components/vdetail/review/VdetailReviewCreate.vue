@@ -48,6 +48,7 @@ export default {
         vid: this.video.id,
         rate: this.rating,
         content: this.content,
+        depth: 0,
       };
 
       this.$store.dispatch("createReview", newReview);
