@@ -3,7 +3,13 @@
     <div v-if="reviews.length">
       <b-table-simple hover responsive>
         <b-tr v-for="(review, index) in reviews" :key="index + 'p'">
-          <b-td> (프로필) </b-td>
+          <b-td>
+            <img
+              style="border: 2px solid; border-radius: 70%"
+              :src="require(`@/assets/images/${review.profile}.png`)"
+              width="40px"
+            />
+          </b-td>
           <b-td>
             <b-row>
               <b-col>{{ review.writer }}</b-col>
@@ -59,7 +65,13 @@
                 </div>
                 <b-tr v-for="(reply, index) in replies" :key="index + 'c'">
                   <div v-if="review.id === reply.re_id">
-                    <b-td> (프로필) </b-td>
+                    <b-td>
+                      <img
+                        style="border: 2px solid; border-radius: 70%"
+                        :src="require(`@/assets/images/${reply.profile}.png`)"
+                        width="40px"
+                      />
+                    </b-td>
                     <b-td>
                       <b-tr>{{ reply.writer }}</b-tr>
                       <b-tr>{{ reply.content }}</b-tr>
@@ -73,7 +85,7 @@
                           small
                           class="mx-2"
                           @click="deleteReview(reply.id)"
-                          >{{ reply.id }}
+                        >
                           <v-icon dark> mdi-delete </v-icon>
                         </v-btn>
                       </div>
@@ -91,8 +103,7 @@
               <v-btn class="mx-2">
                 <v-icon dark> mdi-pencil </v-icon>
               </v-btn>
-              <v-btn class="mx-2" @click="deleteReview(review.id)"
-                >{{ review.id }}
+              <v-btn class="mx-2" @click="deleteReview(review.id)">
                 <v-icon dark>mdi-delete </v-icon>
               </v-btn>
             </div>
@@ -143,7 +154,7 @@ export default {
       this.content[index] = "";
     },
     deleteReview(id) {
-      let payload = {id: id, vid: this.video.id};
+      let payload = { id: id, vid: this.video.id };
       this.$store.dispatch("deleteReview", payload);
     },
 

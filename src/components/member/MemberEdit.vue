@@ -1,5 +1,6 @@
 <template>
   <main class="form-signup">
+    <!-- 회원정보 수정 -->
     <div class="container">
       <h2><b>회원정보 수정</b></h2>
       <b-container class="inner-form">
@@ -7,21 +8,21 @@
         <hr style="width: 30%" />
         <b-form @submit.stop.prevent class="form-text-color">
           <v-carousel class="profile" v-model="user.profile">
-            {{user.profile}}
-            <div>마음에 드는 프로필 사진을 클릭해주세요</div>
+            <div>마음에 드는 프로필 사진을 클릭해주세요</div><br />
             <v-carousel-item
               style="text-align: center"
-              v-for="i in 10"
+              v-for="i in 11"
               :key="i"
               reverse-transition="fade-transition"
               transition="fade-transition"
-              ><img :src="require(`@/assets/images/${i}.png`)" width="400px"
+              ><img :src="require(`@/assets/images/${i-1}.png`)" width="400px"
             /></v-carousel-item>
           </v-carousel>
+          <br />
           <!-- 아이디 -->
           <b-row>
             <b-col cols="9">
-              <b-form-group label="아이디">{{ user.userid }}</b-form-group>
+              <b-form-group label="아이디"><b>{{ user.userid }}</b></b-form-group>
             </b-col>
             <b-col> </b-col>
           </b-row>
@@ -57,7 +58,9 @@
                 <b-form-invalid-feedback :state="validEmail">
                   이메일 형식이 올바르지 않습니다.
                 </b-form-invalid-feedback>
-                <b-form-valid-feedback :state="validEmail" />
+                <b-form-valid-feedback :state="validEmail">
+                  변경하지 않을 경우, 중복확인 없이 기본정보수정이 가능합니다.
+                </b-form-valid-feedback>
               </b-form-group>
             </b-col>
             <b-col class="mt-8">
@@ -82,6 +85,8 @@
           </b-row>
         </b-form>
       </b-container>
+
+      <!-- 비밀번호 변경 -->
       <b-container class="inner-form">
         <h3>비밀번호 변경</h3>
         <hr style="width: 30%" />
@@ -92,7 +97,7 @@
               <b-form-group label="비밀번호">
                 <b-form-input
                   type="password"
-                  v-model="user.pw"
+                  v-model="pw"
                   :state="validPw"
                   trim
                 ></b-form-input>
@@ -122,7 +127,7 @@
             </b-col>
             <b-col> </b-col>
           </b-row>
-          <!-- 가입버튼 -->
+          <!-- 비밀번호 변경버튼 -->
           <b-row>
             <b-col cols="9">
               <b-button
@@ -130,7 +135,7 @@
                 type="submit"
                 @click="changePw"
                 :disabled="isDisabledPw"
-                >비밀번호수정</b-button
+                >비밀번호변경</b-button
               >
             </b-col>
             <b-col> </b-col>
@@ -168,7 +173,6 @@ export default {
       const exptext = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]+$/;
       return exptext.test(this.user.email);
     },
-
     validPw() {
       return this.pw.length > 3 && this.pw.length < 13;
     },
@@ -199,8 +203,7 @@ export default {
       this.$store.dispatch('DuplicateEmail', this.user.email)
     },
     editProfile() {
-      if (this.user.email != this.userinfo.email && 
-      (!this.checkedEmail || this.user.email != this.compare_email)) {
+      if (this.user.email != this.userinfo.email && (!this.checkedEmail || this.user.email != this.compare_email)) {
         alert("이메일 중복체크를 해주세요")
       }
       else {
@@ -208,10 +211,12 @@ export default {
       }
     },
     changePw() {
-
+      let user = {userid: this.user.userid, pw: this.pw};
+      this.$store.dispatch("setPw", user);
     }
   },
   created(){
+    this.$store.commit("SET_AUTH_PW_F");
     this.user.profile = this.userinfo.profile;
     this.user.userid = this.userinfo.userid;
     this.user.nickname = this.userinfo.nickname;

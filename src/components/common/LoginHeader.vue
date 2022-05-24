@@ -137,7 +137,6 @@ export default {
   },
   methods: {
     userLogout() {
-      localStorage.removeItem("access-token");
       this.$store.commit("USER_LOGOUT");
       this.$router.push({ name: "main" });
     },

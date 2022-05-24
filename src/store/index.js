@@ -118,6 +118,7 @@ export default new Vuex.Store({
     },
     //로그아웃 관련
     USER_LOGOUT(state) {
+      localStorage.removeItem("access-token");
       state.isLogin = false;
       state.userinfo = {};
     },
@@ -608,10 +609,15 @@ export default new Vuex.Store({
         url: API_URL,
         method: "PUT",
         params: user,
+        headers: {
+          "access-token": localStorage.getItem("access-token"),
+        },
       })
         .then((res) => {
           console.log(res);
+          commit("SET_AUTH_PROFILE_F");
           alert("비밀번호 재설정이 완료되었습니다.");
+          commit("USER_LOGOUT");
           router.push({ name: "userlogin" });
         })
         .catch((err) => {
@@ -658,8 +664,10 @@ export default new Vuex.Store({
           console.log(res);
           alert("회원정보 수정이 완료되었습니다.");
           commit("DUPL_RESET");
+          commit("SET_AUTH_PROFILE_F");
           alert("다시 로그인 해주세요!");
-          //dispatch 로그아웃(스토리지 포함 수정)
+          commit("USER_LOGOUT");
+          router.push({ name: "userlogin" });
         })
         .catch((err) => {
           console.log(err);

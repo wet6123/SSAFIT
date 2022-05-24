@@ -2,7 +2,11 @@
   <v-container>
     <div class="review">
       <div>
-        <v-icon>mdi-account-circle</v-icon>
+        <img
+                style="border: 2px solid; border-radius: 70%"
+                :src="require(`@/assets/images/${userinfo.profile}.png`)"
+                width="40px"
+              />
       </div>
 
       <div class="review-write">
@@ -33,7 +37,7 @@ export default {
   data() {
     return {
       content: "",
-      rating: 0,
+      rating: 5,
     };
   },
   computed: {
