@@ -26,6 +26,8 @@ export default new Vuex.Store({
     // 리뷰 관련
     reviews: [],
     review: {},
+    replies: [],
+    reply: {},
 
     // 로그인 관련
     isLogin: false, // 로그인 상태
@@ -80,11 +82,14 @@ export default new Vuex.Store({
     },
 
     // 리뷰 관련
-    GET_REVIEWS(state, payload) {
+    GET_REVIEWS(state, payload) { // 부모리뷰리스트
       state.reviews = payload;
     },
     GET_REVIEW(state, payload) {
       state.review = payload;
+    },
+    GET_REPLIES(state, payload) { // 자식답글리스트
+      state.replies = payload;
     },
     CREATE_REVIEW(state, payload) {
       state.reviews.push(payload);
@@ -341,7 +346,7 @@ export default new Vuex.Store({
       if (id) {
         params = id;
       }
-      const API_URL = `${REST_API}/review/all/${id}`; // 백엔드 참고
+      const API_URL = `${REST_API}/review/par/${id}`; // 백엔드 참고
       axios({
         url: API_URL,
         method: "GET",
@@ -369,6 +374,29 @@ export default new Vuex.Store({
       })
         .then((res) => {
           commit("GET_REVIEW", res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    getReplies({ commit }, id) {
+      let params = null;
+
+      if (id) {
+        params = id;
+      }
+      const API_URL = `${REST_API}/review/chi/${id}`; // 백엔드 참고
+      axios({
+        url: API_URL,
+        method: "GET",
+        params,
+        headers: {
+          "access-token": localStorage.getItem("access-token"),
+        },
+      })
+        .then((res) => {
+          console.log(res);
+          commit("GET_REPLIES", res.data);
         })
         .catch((err) => {
           console.log(err);

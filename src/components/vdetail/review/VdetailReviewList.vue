@@ -2,31 +2,84 @@
   <div class="container">
     <div v-if="reviews.length">
       <b-table-simple hover responsive>
-        <b-tbody>
-          <b-tr v-for="(review, index) in reviews" :key="index">
-            <div :id="reviewid" @click="clickReview">
-              <b-td>(프로필)</b-td>
-              <b-td>{{ userinfo.nickname }}</b-td>
-              <b-td>
-                <b-tr>{{ review.content }}</b-tr>
-                <b-tr>{{ userinfo.id }}</b-tr>
-                <b-tr>{{ review.uid }}</b-tr>
-              </b-td>
-              <b-td><b-link :to="`/review/${review.id}`">답글</b-link> </b-td>
-              <div v-if="userinfo.id === review.uid">
-                <b-td>
-                  <v-btn class="mx-2">
-                    <v-icon dark> mdi-pencil </v-icon>
-                  </v-btn>
-                  <v-btn class="mx-2">
-                    <v-icon dark> mdi-delete </v-icon>
-                  </v-btn>
-                </b-td>
+        <b-tr v-for="(review, index) in reviews" :key="index">
+          <b-td>(프로필)</b-td>
+          <b-tr>
+            <b-td>{{ userinfo.nickname }}</b-td>
+            <b-td>{{ review.rate }}</b-td>
+            <b-td><b-link @click="toggleCreateReply(index)">답글</b-link></b-td>
+            <b-td
+              ><div v-if="userinfo.id === review.uid">
+                <v-btn class="mx-2">
+                  <v-icon dark> mdi-pencil </v-icon>
+                </v-btn>
+                <v-btn class="mx-2">
+                  <v-icon dark> mdi-delete </v-icon>
+                </v-btn>
+              </div></b-td
+            >
+          </b-tr>
+          <b-tr>
+            <b-td>
+              <b-tr>{{ review.content }}</b-tr>
+            </b-td>
+          </b-tr>
+          <b-tr>
+            <div class="review" :id="index" style="display: none">
+              <div>
+                <v-icon>mdi-account-circle</v-icon>
               </div>
-              <div v-else><v-btn class="mx-2"> 신고 </v-btn></div>
+              <div class="review-write">
+                <v-text-field
+                  v-model="content"
+                  label="답글을 작성해주세요"
+                ></v-text-field>
+              </div>
+              <div class="btn">
+                <b-button
+                  variant="outline-secondary"
+                  @click="toggleCreateReply(index)"
+                  >취소</b-button
+                >
+                <b-button variant="outline-secondary" @click="createReview"
+                  >등록</b-button
+                >
+              </div>
             </div>
           </b-tr>
-        </b-tbody>
+          <b-tr>
+            <b-link @click="toggleShowReply(review.id)">답글 {{replies.length}}개</b-link>
+            <div class="review" :id="review.id" style="display: none">
+              <b-tr v-for="(reply, index) in replies" :key="index">
+                <b-td>(프로필)</b-td>
+                <b-tr>
+                  <b-td>{{ reply.nickname }}</b-td>
+                  <b-td>{{ reply.rate }}</b-td>
+                  <b-td
+                    ><b-link @click="toggleCreateReply(index)"
+                      >답글</b-link
+                    ></b-td
+                  >
+                  <b-td
+                    ><div v-if="userinfo.id === reply.uid">
+                      <v-btn class="mx-2">
+                        <v-icon dark> mdi-pencil </v-icon>
+                      </v-btn>
+                      <v-btn class="mx-2">
+                        <v-icon dark> mdi-delete </v-icon>
+                      </v-btn>
+                    </div></b-td
+                  >
+                </b-tr>
+                <b-tr>
+                  <b-td>
+                    <b-tr>{{ reply.content }}</b-tr>
+                  </b-td>
+                </b-tr>
+              </b-tr>
+            </div>
+          </b-tr>
+        </b-tr>
       </b-table-simple>
     </div>
     <div v-else>등록된 리뷰가 없습니다.</div>
@@ -38,26 +91,43 @@ import { mapState } from "vuex";
 
 export default {
   name: "VdetailReviewList",
-  data() {
-    return {
-      reviewid: "",
-    };
-  },
+  // data() {
+  //   return {
+  //   };
+  // },
   computed: {
-    ...mapState(["reviews", "userinfo"]),
+    ...mapState(["video","reviews", "userinfo", "replies"]),
   },
   methods: {
-    getReview() {},
-    deleteReview() {
-      this.$store.dispatch("deleteReview");
-      this.content = "";
+    toggleCreateReply(index) {
+      let e = document.getElementById(index);
+      e.style.display = e.style.display != "none" ? "none" : "block";
     },
-    setRating: function (rating) {
-      this.rating = rating;
+    toggleShowReply(reviewid) {
+      let e = document.getElementById(reviewid);
+      e.style.display = e.style.display != "none" ? "none" : "block";
     },
-    clickReview() {
-      this.reviewid = document.getElementById();
-    },
+    // createReply() {
+    //   let newReply = {
+    //     uid: 0,
+    //     vid: this.video.id,
+    //     content: this.content,
+    //     depth: 1,
+    //   };
+
+    //   this.$store.dispatch("createReview", newReply);
+    //   this.content = "";
+    // },
+
+
+    // getReview() {},
+    // deleteReview() {
+    //   this.$store.dispatch("deleteReview");
+    //   this.content = "";
+    // },
+    // setRating: function (rating) {
+    //   this.rating = rating;
+    // },
   },
 
   // methods: {
