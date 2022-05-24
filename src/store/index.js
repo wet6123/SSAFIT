@@ -643,7 +643,7 @@ export default new Vuex.Store({
           alert(`잘못된 요청입니다.`);
         });
     },
-    modifyProfile({ commit, dispatch }, user) {
+    modifyProfile({ commit }, user) {
       const API_URL = `${REST_API}/user/info/${user.userid}`;
       axios({
         url: API_URL,
