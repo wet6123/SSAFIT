@@ -148,9 +148,9 @@ export default {
     // },
   },
   created() {
-    const pathName = new URL(document.location).pathname.split("/");
-    const id = pathName[pathName.length - 1];
-    this.$store.dispatch("getReplies", id);
+    // const pathName = new URL(document.location).pathname.split("/");
+    // const id = pathName[pathName.length - 1];
+    // this.$store.dispatch("getReplies", id);
     for(let i=0; i<this.reviews.length; i++) {
       this.content[i] = "";
     }

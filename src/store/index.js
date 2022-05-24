@@ -95,8 +95,7 @@ export default new Vuex.Store({
     },
     RESET_REPLIES_NUM(state, payload) {
       for (let i = 0; i < payload.length; i++) {
-        state.replyNum[payload[i].id] = parseInt("0");
-        console.log(payload[i].id);
+        state.replyNum[payload[i].id] = 0;
       }
     },
     SET_REPLIES_NUM(state, payload) {
@@ -353,7 +352,7 @@ export default new Vuex.Store({
     },
 
     //리뷰 관련
-    getReviews({ commit }, id) {
+    getReviews({ commit, dispatch }, id) {
       let params = null;
 
       if (id) {
@@ -372,6 +371,7 @@ export default new Vuex.Store({
           console.log(res);
           commit("GET_REVIEWS", res.data);
           commit("RESET_REPLIES_NUM", res.data);
+          dispatch("getReplies", id);
         })
         .catch((err) => {
           console.log(err);
@@ -429,7 +429,7 @@ export default new Vuex.Store({
       })
         .then(() => {
           dispatch("getReviews", review.vid);
-          dispatch("getReplies", review.vid);
+          // dispatch("getReplies", review.vid);
         })
         .catch((err) => {
           console.log(err);
