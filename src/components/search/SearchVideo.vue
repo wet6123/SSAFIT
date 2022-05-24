@@ -34,6 +34,7 @@
 
 <script>
 import { mapState } from "vuex";
+import router from "@/router"; //삭제 해야해~
 
 export default {
   name: "SearchVideo",
@@ -54,30 +55,34 @@ export default {
   methods: {
     // 찜 버튼 누르기
     like(id) {
-      this.$store.dispatch("getLiked").then(() => {
-        let flag = true;
-        for (let video of this.liked) {
-          if (video.id === id) {
-            flag = false;
-            break;
-          }
-        }
-        if (flag) {
-          this.$store.dispatch("createLiked", { id: id });
-          alert("찜 리스트에 추가되었습니다.");
-        } else {
-          this.$store.dispatch("deleteLiked", { id: id });
-          let idx = 0;
-          for (let photo of this.result) {
-            if (photo.id === id) {
-              this.result.splice(idx, 1);
+      if (localStorage.getItem("access-token") === null) {
+        alert("로그인이 필요한 서비스입니다.");
+        router.push({ name: "userlogin" }); //삭제할때 import 한거도 삭제해
+      } else
+        this.$store.dispatch("getLiked").then(() => {
+          let flag = true;
+          for (let video of this.liked) {
+            if (video.id === id) {
+              flag = false;
               break;
             }
-            idx++;
           }
-          alert("찜 리스트에서 삭제되었습니다.");
-        }
-      });
+          if (flag) {
+            this.$store.dispatch("createLiked", { id: id });
+            alert("찜 리스트에 추가되었습니다.");
+          } else {
+            this.$store.dispatch("deleteLiked", { id: id });
+            let idx = 0;
+            for (let photo of this.result) {
+              if (photo.id === id) {
+                this.result.splice(idx, 1);
+                break;
+              }
+              idx++;
+            }
+            alert("찜 리스트에서 삭제되었습니다.");
+          }
+        });
     },
     //검색
     search(keyword) {
