@@ -10,7 +10,7 @@
             <div>마음에 드는 프로필 사진을 클릭해주세요</div>
             <v-carousel-item
               style="text-align: center"
-              v-for="i in 5"
+              v-for="i in 10"
               :key="i"
               reverse-transition="fade-transition"
               transition="fade-transition"
