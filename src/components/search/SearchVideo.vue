@@ -95,6 +95,7 @@ export default {
           add.push({ title, ...rest });
         }
       }
+      add.push({}, {}, {});
       this.result = add;
     },
     textLengthOverCut(txt, len, lastTxt) {
