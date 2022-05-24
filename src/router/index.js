@@ -25,6 +25,7 @@ import store from "@/store/index.js";
 
 Vue.use(VueRouter);
 
+// 네비게이션 가드
 const requireAuth = () => (to, from, next) => {
   if (store.getters.getIsLogin) {
     return next();
@@ -38,6 +39,14 @@ const setPWAuth = () => (to, from, next) => {
     return next();
   }
   next("/user/check");
+  alert("본인확인이 필요합니다.");
+};
+
+const editProfieAuth = () => (to, from, next) => {
+  if (store.getters.getProfileAuth) {
+    return next();
+  }
+  next("/member/check");
   alert("본인확인이 필요합니다.");
 };
 
@@ -95,6 +104,7 @@ const routes = [
         path: "edit",
         name: "memberedit",
         component: MemberEdit,
+        beforeEnter: editProfieAuth(),
       },
     ],
   },

@@ -50,6 +50,9 @@ export default new Vuex.Store({
     getPwAuth(state) {
       return state.isAuthPw;
     },
+    getProfileAuth(state) {
+      return state.isAuthProfile;
+    }
   },
   mutations: {
     // 비디오 관련
@@ -634,6 +637,28 @@ export default new Vuex.Store({
           } else {
             alert("비밀번호가 일치하지 않습니다.");
           }
+        })
+        .catch((err) => {
+          console.log(err);
+          alert(`잘못된 요청입니다.`);
+        });
+    },
+    modifyProfile({ commit, dispatch }, user) {
+      const API_URL = `${REST_API}/user/info/${user.userid}`;
+      axios({
+        url: API_URL,
+        method: "PUT",
+        params: user,
+        headers: {
+          "access-token": localStorage.getItem("access-token"),
+        },
+      })
+        .then((res) => {
+          console.log(res);
+          alert("회원정보 수정이 완료되었습니다.");
+          commit("DUPL_RESET");
+          alert("다시 로그인 해주세요!")
+          //dispatch 로그아웃(스토리지 포함 수정)
         })
         .catch((err) => {
           console.log(err);
