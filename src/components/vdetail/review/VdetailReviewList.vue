@@ -9,7 +9,7 @@
               <b-col>{{ review.writer }}</b-col>
               <b-col
                 ><star-rating
-                  :rating="review.rate"
+                  :rating="review.rate / 2"
                   :read-only="true"
                   :increment="0.5"
                   :star-size="20"
@@ -29,6 +29,7 @@
                   <v-text-field
                     v-model="content"
                     label="답글을 작성해주세요"
+                    @keyup.enter="createReply(review.id)"
                   ></v-text-field>
                 </b-col>
                 <b-col class="btn" cols="4">
