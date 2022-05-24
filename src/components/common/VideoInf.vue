@@ -75,13 +75,15 @@ export default {
             alert("찜 리스트에 추가되었습니다.");
           } else {
             this.$store.dispatch("deleteLiked", { id: id });
-            let idx = 0;
-            for (let photo of this.shownPhotos) {
-              if (photo.id === id) {
-                this.shownPhotos.splice(idx, 1);
-                break;
+            if (this.option.state == "liked") {
+              let idx = 0;
+              for (let photo of this.shownPhotos) {
+                if (photo.id === id) {
+                  this.shownPhotos.splice(idx, 1);
+                  break;
+                }
+                idx++;
               }
-              idx++;
             }
             alert("찜 리스트에서 삭제되었습니다.");
           }
