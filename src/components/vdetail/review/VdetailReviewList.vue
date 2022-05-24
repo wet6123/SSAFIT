@@ -27,22 +27,22 @@
                 </b-col>
                 <b-col class="review-write" cols="7">
                   <v-text-field
-                    v-model="content"
+                    v-model="content[index]"
                     label="답글을 작성해주세요"
-                    @keyup.enter="createReply(review.id)"
+                    @keyup.enter="createReply(review.id, index)"
                   ></v-text-field>
                 </b-col>
                 <b-col class="btn" cols="4">
                   <b-button
                     variant="outline-secondary"
-                    @click="createReply(review.id)"
+                    @click="createReply(review.id, index)"
                     class="btn-sm"
                     >등록</b-button
                   >
                   <b-button
                     class="btn-sm"
                     variant="outline-secondary"
-                    @click="toggleCreateReply(index)"
+                    @click="toggleCreateReply(index+'p')"
                     >취소</b-button
                   >
                 </b-col>
@@ -106,7 +106,7 @@ export default {
   name: "VdetailReviewList",
   data() {
     return {
-      content: "",
+      content: [],
       num: [],
     };
   },
@@ -125,17 +125,17 @@ export default {
       let e = document.getElementById(reviewid);
       e.style.display = e.style.display != "none" ? "none" : "block";
     },
-    createReply(re_id) {
+    createReply(re_id, index) {
       let newReply = {
         uid: 0,
         vid: this.video.id,
-        content: this.content,
+        content: this.content[index],
         depth: 1,
         re_id,
       };
 
       this.$store.dispatch("createReview", newReply);
-      this.content = "";
+      this.content[index] = "";
     },
 
     // getReview() {},
@@ -151,6 +151,9 @@ export default {
     const pathName = new URL(document.location).pathname.split("/");
     const id = pathName[pathName.length - 1];
     this.$store.dispatch("getReplies", id);
+    for(let i=0; i<this.reviews.length; i++) {
+      this.content[i] = "";
+    }
   },
 
   // methods: {
