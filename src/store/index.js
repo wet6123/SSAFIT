@@ -93,12 +93,10 @@ export default new Vuex.Store({
       // 자식답글리스트
       state.replies = payload;
     },
-    RESET_REPLIES_NUM(state, payload) {
-      for (let i = 0; i < payload.length; i++) {
-        state.replyNum[payload[i].id] = 0;
-      }
-    },
     SET_REPLIES_NUM(state, payload) {
+      for (let i = 0; i < state.reviews.length; i++) {
+        state.replyNum[state.reviews[i].id] = 0;
+      }
       for (let i = 0; i < payload.length; i++) {
         state.replyNum[payload[i].re_id]++;
       }
@@ -370,7 +368,6 @@ export default new Vuex.Store({
         .then((res) => {
           console.log(res);
           commit("GET_REVIEWS", res.data);
-          commit("RESET_REPLIES_NUM", res.data);
           dispatch("getReplies", id);
         })
         .catch((err) => {
@@ -429,7 +426,6 @@ export default new Vuex.Store({
       })
         .then(() => {
           dispatch("getReviews", review.vid);
-          // dispatch("getReplies", review.vid);
         })
         .catch((err) => {
           console.log(err);
