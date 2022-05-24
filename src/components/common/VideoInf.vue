@@ -1,12 +1,16 @@
 <template>
   <div style="max-width: 1190px">
     <div class="cardContainer">
-      <span v-for="(photo, idx) in shownPhotos" v-bind:key="idx" class="card">
+      <span
+        v-for="(photo, idx) in shownPhotos"
+        v-bind:key="idx"
+        :class="[{ card: photo.url }, { notCard: !photo.url }]"
+      >
         <router-link :to="`/vdetail/${photo.id}`">
           <img :src="photo.url" alt="" />
           <span>{{ photo.title }}</span>
         </router-link>
-        <button>
+        <button @click="like(photo.id)">
           <font-awesome-icon icon="fa-solid fa-heart" id="likeBtn" />
         </button>
       </span>
@@ -18,6 +22,7 @@
 <script>
 // import lodash from "lodash";
 import { mapState } from "vuex";
+import router from "@/router";
 
 export default {
   name: "VideoInf",
@@ -51,6 +56,38 @@ export default {
     ...mapState(["liked"]), //여기에 state 더 불러와줘야함
   },
   methods: {
+    // 찜 버튼 누르기
+    like(id) {
+      if (localStorage.getItem("access-token") === null) {
+        alert("로그인이 필요한 서비스입니다.");
+        router.push({ name: "userlogin" });
+      } else
+        this.$store.dispatch("getLiked").then(() => {
+          let flag = true;
+          for (let video of this.liked) {
+            if (video.id === id) {
+              flag = false;
+              break;
+            }
+          }
+          if (flag) {
+            this.$store.dispatch("createLiked", { id: id });
+            alert("찜 리스트에 추가되었습니다.");
+          } else {
+            this.$store.dispatch("deleteLiked", { id: id });
+            let idx = 0;
+            for (let photo of this.shownPhotos) {
+              if (photo.id === id) {
+                this.shownPhotos.splice(idx, 1);
+                break;
+              }
+              idx++;
+            }
+            alert("찜 리스트에서 삭제되었습니다.");
+          }
+        });
+    },
+    // 사진 가져와서 출력
     getPhotos: function () {
       this.$store.dispatch(this.option.action).then(() => {
         let add = [];
@@ -61,7 +98,7 @@ export default {
           for (let video of this.videos) {
             if (video.part.includes(this.part)) {
               let { title, ...rest } = video;
-              title = this.textLengthOverCut(title, 18, "...");
+              title = this.textLengthOverCut(title, 27, "...");
               add.push({ title, ...rest });
             }
           }
@@ -70,7 +107,7 @@ export default {
           for (let video of this.watched) {
             if (video.part.includes(this.part)) {
               let { title, ...rest } = video;
-              title = this.textLengthOverCut(title, 18, "...");
+              title = this.textLengthOverCut(title, 27, "...");
               add.unshift({ title, ...rest });
             }
           }
@@ -79,12 +116,14 @@ export default {
           for (let video of this.liked) {
             if (video.part.includes(this.part)) {
               let { title, ...rest } = video;
-              title = this.textLengthOverCut(title, 18, "...");
+              title = this.textLengthOverCut(title, 27, "...");
               add.unshift({ title, ...rest });
             }
           }
         }
         this.photos = [...this.photos, ...add];
+        console.log("photos");
+        console.log(this.photos);
         this.loaded += add.length;
         // console.log(this.photos.length);
         this.addFromLoaded();
@@ -103,7 +142,11 @@ export default {
     addFromLoaded() {
       let added = this.howMany;
       if (this.howMany > this.photos.length) added = this.photos.length;
+      this.shownPhotos.splice(this.current, 3);
       this.shownPhotos.splice(this.current, 0, ...this.photos.splice(0, added));
+      this.shownPhotos.push({}, {}, {});
+      console.log("shownphotos");
+      console.log(this.shownPhotos);
       console.log("loaded: " + this.loaded + " current: " + this.current);
       // console.log(this.shownPhotos.length);
       this.current += added;
@@ -144,7 +187,22 @@ export default {
 </script>
 
 <style>
+.notCard {
+  max-width: 370px;
+  flex-grow: 1;
+  display: inline-block;
+  width: auto;
+  flex-basis: 223px;
+  padding: 10px;
+  border: 0 !important;
+}
+
+.notCard #likeBtn {
+  display: none;
+}
+
 .card {
+  max-width: 370px;
   flex-grow: 1;
   display: inline-block;
   width: auto;
@@ -161,29 +219,36 @@ export default {
 }
 
 .card img {
+  border-radius: 7px;
   width: 100%;
   transition: 0.3s;
 }
 
 .card:hover img {
+  border-radius: 12px;
   width: 100%;
-  filter: brightness(50%);
+  filter: brightness(35%);
   transition: 0.3s;
 }
 
 .card span {
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  width: 80%;
+  top: 50%;
+  left: 10%;
+  color: white;
+  font-size: 15px;
+  font-weight: bold;
   transition: 0.3s;
-  color: black;
 }
 
 .card:hover span {
-  position: absolute;
-  width: 80%;
+  visibility: visible;
+  opacity: 1;
   top: 60%;
-  left: 10%;
-  color: white;
   font-size: 23px;
-  font-weight: bold;
   transition: 0.3s;
 }
 
@@ -204,13 +269,13 @@ export default {
   transition: 0.5s;
 }
 
-#likeBtn {
+.card #likeBtn {
   color: white;
   font-size: 30px;
   transition: 0.3s;
 }
 
-#likeBtn:hover {
+.card #likeBtn:hover {
   color: #f82f62;
   transition: 0.3s;
 }

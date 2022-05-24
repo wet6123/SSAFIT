@@ -2,9 +2,16 @@
   <v-app>
     <div>
       <v-app-bar app color="white" flat>
-        <a href="/" class="ssafit"> &nbsp;SSAFIT </a>
+        <a href="/" class="ssafit">
+          &nbsp;SSAFIT &nbsp;
+          <img src="https://img.icons8.com/ios/50/000000/exercise.png"
+        /></a>
         <v-spacer></v-spacer>
-        <h6 class="mt-3">{{userinfo.nickname}}님 안녕하세요!</h6>
+        <h6 class="mt-3">
+          <b-icon icon="star-fill" animation="fade" font-scale="1"></b-icon>
+          {{ userinfo.nickname }}님 안녕하세요
+          <b-icon icon="star-fill" animation="fade" font-scale="1"></b-icon>
+        </h6>
         <v-menu left bottom>
           <template v-slot:activator="{ on, attrs }">
             <v-btn icon v-bind="attrs" v-on="on">
@@ -88,7 +95,7 @@
 </template>
 
 <script>
-import {mapState} from 'vuex';
+import { mapState } from "vuex";
 
 export default {
   data: () => ({
@@ -119,7 +126,7 @@ export default {
     ],
   }),
   computed: {
-    ...mapState(['userinfo'])
+    ...mapState(["userinfo"]),
   },
   methods: {
     userLogout() {

@@ -2,7 +2,10 @@
   <v-app>
     <div>
       <v-app-bar app color="white" flat>
-        <a href="/" class="ssafit"> &nbsp;SSAFIT </a>
+        <a href="/" class="ssafit">
+          &nbsp;SSAFIT &nbsp;
+          <img src="https://img.icons8.com/ios/50/000000/exercise.png"
+        /></a>
         <v-spacer></v-spacer>
         <v-btn to="/user/login" color="grey" class="login"> Log In </v-btn>
       </v-app-bar>
