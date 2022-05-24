@@ -69,6 +69,12 @@ export default new Vuex.Store({
     GET_LIKED(state, payload) {
       state.liked = payload;
     },
+    CREATE_LIKED(state, payload) {
+      state.liked.push(payload);
+    },
+    UPDATE_LIKED(state, payload) {
+      state.liked = payload;
+    },
 
     // 시청 기록 관련
     GET_WATCHED(state, payload) {
@@ -275,7 +281,7 @@ export default new Vuex.Store({
           });
       });
     },
-    createLiked(context, payload) {
+    createLiked({ commit }, payload) {
       const API_URL = `${REST_API}/video/likes`; // 백엔드 참고
       axios({
         url: API_URL,
@@ -287,14 +293,16 @@ export default new Vuex.Store({
       })
         .then((res) => {
           console.log("createLiked: " + res.data);
-          // commit("CREATE_LIKED", payload);
+          commit("CREATE_LIKED", payload);
         })
         .catch((err) => {
           console.log(err);
         });
     },
-    deleteLiked(context, payload) {
-      context;
+    deleteLiked({ commit }, payload) {
+      {
+        commit;
+      }
       const API_URL = `${REST_API}/video/likes/${payload.id}`; // 백엔드 참고
       axios({
         url: API_URL,
