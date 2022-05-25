@@ -270,4 +270,25 @@ export default {
   text-align: center;
   width: 500px;
 }
+@media screen and (max-width: 768px) {
+  .form-signup {
+    padding: 0px;
+    width: 90%;
+    margin: auto;
+  }
+  .container {
+    padding: 0px;
+    margin: 0px;
+    max-width: none;
+  }
+  .inner-form {
+    width: auto;
+    margin: 30px;
+    padding: 30px;
+  }
+  .profile {
+    text-align: center;
+    width: auto;
+  }
+}
 </style>

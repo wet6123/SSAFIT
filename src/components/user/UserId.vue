@@ -11,7 +11,8 @@
               size="lg"
               v-model="nickname"
               placeholder="닉네임을 입력하세요."
-              trim></b-form-input>
+              trim
+            ></b-form-input>
           </b-form-group>
           <b-form-group label="이메일">
             <b-form-input
@@ -20,17 +21,22 @@
               size="lg"
               v-model="email"
               placeholder="이메일을 입력하세요."
-              trim>></b-form-input>
+              trim
+              >></b-form-input
+            >
           </b-form-group>
-          <br/>
+          <br />
           <b-button
             class="w-100 btn btn-lg btn-outline-secondary findid-btn"
             type="submit"
             @click="findId"
-            >아이디 찾기</b-button>
+            >아이디 찾기</b-button
+          >
         </b-form>
         <div class="container text-right">
-            <router-link :to="{name: 'usercheck'}" class="find">비밀번호 재설정</router-link>
+          <router-link :to="{ name: 'usercheck' }" class="find"
+            >비밀번호 재설정</router-link
+          >
         </div>
       </div>
     </div>
@@ -42,21 +48,22 @@ export default {
   data() {
     return {
       nickname: "",
-      email: ""
+      email: "",
     };
   },
   methods: {
-    findId() {  
-      if(this.nickname.length == 0) {
-        alert("이름을 입력해주세요.")
+    findId() {
+      if (this.nickname.length == 0) {
+        alert("이름을 입력해주세요.");
         document.querySelector("#userName").focus();
-      }
-      else if(this.email.length == 0) {
-        alert("이메일을 입력해주세요.")
+      } else if (this.email.length == 0) {
+        alert("이메일을 입력해주세요.");
         document.querySelector("#userEmail").focus();
-      }
-      else {
-        this.$store.dispatch('getUserId', {nickname: this.nickname, email: this.email})
+      } else {
+        this.$store.dispatch("getUserId", {
+          nickname: this.nickname,
+          email: this.email,
+        });
         this.nickname = "";
         this.email = "";
         document.querySelector("#userName").focus();
@@ -85,5 +92,11 @@ export default {
 a {
   color: black;
   text-decoration: none;
+}
+@media screen and (max-width: 768px) {
+  .form-findid {
+    width: 90%;
+    margin: auto;
+  }
 }
 </style>

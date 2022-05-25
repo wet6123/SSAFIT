@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div>
     <div>여기는 mainview입니다</div>
     <main-carousel></main-carousel>
     <!-- main video에 부위랑 비디오 출력 있음 -->

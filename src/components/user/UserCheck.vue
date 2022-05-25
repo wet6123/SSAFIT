@@ -11,7 +11,8 @@
               size="lg"
               v-model="user.userid"
               placeholder="아이디를 입력하세요."
-              trim></b-form-input>
+              trim
+            ></b-form-input>
           </b-form-group>
           <b-form-group label="이름">
             <b-form-input
@@ -20,7 +21,8 @@
               size="lg"
               v-model="user.nickname"
               placeholder="닉네임을 입력하세요."
-              trim></b-form-input>
+              trim
+            ></b-form-input>
           </b-form-group>
           <b-form-group label="이메일">
             <b-form-input
@@ -29,17 +31,21 @@
               size="lg"
               v-model="user.email"
               placeholder="이메일을 입력하세요."
-              trim></b-form-input>
+              trim
+            ></b-form-input>
           </b-form-group>
-          <br/>
+          <br />
           <b-button
             class="w-100 btn btn-lg btn-outline-secondary login-btn"
             type="submit"
             @click="findId"
-            >본인 확인하기</b-button>
+            >본인 확인하기</b-button
+          >
         </b-form>
         <div class="container">
-            <router-link :to="{name: 'userid'}" class="find">아이디 찾기</router-link>
+          <router-link :to="{ name: 'userid' }" class="find"
+            >아이디 찾기</router-link
+          >
         </div>
       </div>
     </div>
@@ -50,29 +56,26 @@
 export default {
   data() {
     return {
-        user: {
-            userid: "",
-            nickname: "",
-            email: ""
-        }
+      user: {
+        userid: "",
+        nickname: "",
+        email: "",
+      },
     };
   },
   methods: {
-    findId() {  
-      if(this.user.userid.length == 0) {
-        alert("아이디를 입력해주세요.")
+    findId() {
+      if (this.user.userid.length == 0) {
+        alert("아이디를 입력해주세요.");
         document.querySelector("#userId").focus();
-      }
-      else if(this.user.nickname.length == 0) {
-        alert("이름을 입력해주세요.")
+      } else if (this.user.nickname.length == 0) {
+        alert("이름을 입력해주세요.");
         document.querySelector("#userEmail").focus();
-      }
-      else if(this.user.email.length == 0) {
-        alert("이메일을 입력해주세요.")
+      } else if (this.user.email.length == 0) {
+        alert("이메일을 입력해주세요.");
         document.querySelector("#userEmail").focus();
-      }
-      else {
-        this.$store.dispatch('getAuthPw', this.user)
+      } else {
+        this.$store.dispatch("getAuthPw", this.user);
       }
     },
   },
@@ -98,5 +101,11 @@ export default {
 a {
   color: black;
   text-decoration: none;
+}
+@media screen and (max-width: 768px) {
+  .form-login {
+    width: 90%;
+    margin: auto;
+  }
 }
 </style>

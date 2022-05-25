@@ -3,7 +3,7 @@
     <div class="container">
       <div style="margin: 100px 0px">
         <h2><b>회원 가입</b></h2>
-        <br/>
+        <br />
         <b-form @submit.stop.prevent>
           <!-- 아이디 -->
           <b-row>
@@ -13,7 +13,8 @@
                   type="text"
                   v-model="user.userid"
                   :state="validId"
-                  trim></b-form-input>
+                  trim
+                ></b-form-input>
                 <b-form-invalid-feedback :state="validId">
                   아이디는 5 ~ 12 글자로 작성해주세요.
                 </b-form-invalid-feedback>
@@ -21,10 +22,7 @@
               </b-form-group>
             </b-col>
             <b-col class="mt-8">
-              <b-button
-                @click="idDuplicateCheck"
-                size="sm"
-                >중복확인</b-button>
+              <b-button @click="idDuplicateCheck" size="sm">중복확인</b-button>
             </b-col>
           </b-row>
           <!-- 이름 -->
@@ -35,7 +33,8 @@
                   type="text"
                   v-model="user.nickname"
                   :state="validName"
-                  trim></b-form-input>
+                  trim
+                ></b-form-input>
                 <b-form-invalid-feedback :state="validName">
                   닉네임을 입력해주세요.
                 </b-form-invalid-feedback>
@@ -52,7 +51,8 @@
                   type="password"
                   v-model="user.pw"
                   :state="validPw"
-                  trim></b-form-input>
+                  trim
+                ></b-form-input>
                 <b-form-invalid-feedback :state="validPw">
                   비밀번호는 4 ~ 12 글자로 작성해주세요.
                 </b-form-invalid-feedback>
@@ -69,7 +69,8 @@
                   type="password"
                   v-model="pw2"
                   :state="validPw_Re"
-                  trim></b-form-input>
+                  trim
+                ></b-form-input>
                 <b-form-invalid-feedback :state="validPw_Re">
                   동일한 암호를 입력하세요.
                 </b-form-invalid-feedback>
@@ -87,7 +88,8 @@
                   v-model="user.email"
                   :state="validEmail"
                   required
-                  trim></b-form-input>
+                  trim
+                ></b-form-input>
                 <b-form-invalid-feedback :state="validEmail">
                   이메일 형식이 올바르지 않습니다.
                 </b-form-invalid-feedback>
@@ -95,13 +97,12 @@
               </b-form-group>
             </b-col>
             <b-col class="mt-8">
-              <b-button
-                @click="emailDuplicateCheck"
-                size="sm"
-                >중복확인</b-button>
+              <b-button @click="emailDuplicateCheck" size="sm"
+                >중복확인</b-button
+              >
             </b-col>
           </b-row>
-          <br/>
+          <br />
           <!-- 가입버튼 -->
           <b-row>
             <b-col cols="9">
@@ -110,7 +111,8 @@
                 type="submit"
                 @click="signup"
                 :disabled="isDisabled"
-                >회원가입</b-button>
+                >회원가입</b-button
+              >
             </b-col>
             <b-col> </b-col>
           </b-row>
@@ -121,7 +123,7 @@
 </template>
 
 <script>
-import {mapState} from 'vuex';
+import { mapState } from "vuex";
 
 export default {
   data() {
@@ -133,7 +135,6 @@ export default {
         email: "",
       },
       pw2: "",
-      
     };
   },
   computed: {
@@ -154,35 +155,38 @@ export default {
     },
     validEmail() {
       const exptext = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]+$/;
-			return exptext.test(this.user.email);
-		},
+      return exptext.test(this.user.email);
+    },
 
     // 회원가입 버튼 활성화
     isDisabled() {
-      if(this.validId && this.validName && this.validPw && this.validPw_Re && this.validEmail) {
-        return false;        
-      }
-      else {
+      if (
+        this.validId &&
+        this.validName &&
+        this.validPw &&
+        this.validPw_Re &&
+        this.validEmail
+      ) {
+        return false;
+      } else {
         return true;
       }
-    }
+    },
   },
   methods: {
     idDuplicateCheck() {
-      this.$store.dispatch('DuplicateId', this.user.userid)
+      this.$store.dispatch("DuplicateId", this.user.userid);
     },
     emailDuplicateCheck() {
-      this.$store.dispatch('DuplicateEmail', this.user.email)
+      this.$store.dispatch("DuplicateEmail", this.user.email);
     },
     signup() {
       if (!this.checkedId || this.user.userid != this.compare_id) {
-        alert("아이디 중복체크를 해주세요")
-      }
-      else if (!this.checkedEmail || this.user.email != this.compare_email) {
-        alert("이메일 중복체크를 해주세요")
-      }
-      else {
-        this.$store.dispatch('userSignup', this.user)
+        alert("아이디 중복체크를 해주세요");
+      } else if (!this.checkedEmail || this.user.email != this.compare_email) {
+        alert("이메일 중복체크를 해주세요");
+      } else {
+        this.$store.dispatch("userSignup", this.user);
       }
     },
   },
@@ -197,5 +201,11 @@ export default {
 .signup-btn {
   color: black;
   text-decoration: none;
+}
+@media screen and (max-width: 768px) {
+  .form-signup {
+    width: 90%;
+    margin: auto;
+  }
 }
 </style>

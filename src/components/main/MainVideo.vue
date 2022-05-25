@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
     <div class="btnContainer">
       <button @click="part = ''" class="partBtn" id="totalBtn">전체</button>
       <button

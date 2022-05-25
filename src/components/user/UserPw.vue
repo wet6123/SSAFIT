@@ -44,17 +44,17 @@
 </template>
 
 <script>
-import {mapState} from 'vuex';
+import { mapState } from "vuex";
 
 export default {
   data() {
     return {
-        pw: "",
-        pw2: "",
+      pw: "",
+      pw2: "",
     };
   },
   computed: {
-      ...mapState(["tmp_userid"]),
+    ...mapState(["tmp_userid"]),
 
     // 유효성 검사
     validPw() {
@@ -75,8 +75,8 @@ export default {
   },
   methods: {
     setPw() {
-        let user = {userid: this.tmp_userid, pw: this.pw};
-        this.$store.dispatch("setPw", user);
+      let user = { userid: this.tmp_userid, pw: this.pw };
+      this.$store.dispatch("setPw", user);
     },
   },
   created() {
@@ -93,5 +93,11 @@ export default {
 .setpw-btn {
   color: black;
   text-decoration: none;
+}
+@media screen and (max-width: 768px) {
+  .form-findpw {
+    width: 80%;
+    margin: auto;
+  }
 }
 </style>

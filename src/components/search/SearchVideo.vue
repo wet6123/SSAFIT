@@ -1,7 +1,7 @@
 // 새로고침하면 목록 사라져버림
 
 <template>
-  <div>
+  <div class="container">
     <!-- 검색창 -->
     <form @submit.prevent>
       <input
