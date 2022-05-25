@@ -188,7 +188,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .notCard {
   max-width: 370px;
   flex-grow: 1;
@@ -234,6 +234,9 @@ export default {
 }
 
 .card span {
+  height: 70px;
+  overflow: hidden;
+
   visibility: hidden;
   opacity: 0;
   position: absolute;
