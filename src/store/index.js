@@ -427,16 +427,20 @@ export default new Vuex.Store({
           console.log(err);
         });
     },
-    updateReview({ commit }, review) {
-      const API_URL = `${REST_API}/review/update`; // 백엔드 참고
+    modifyReview({ dispatch }, review) {
+      const API_URL = `${REST_API}/review/update/${review.id}`; // 백엔드 참고
       axios({
         url: API_URL,
         method: "PUT",
         params: review,
+        headers: {
+          "access-token": localStorage.getItem("access-token"),
+        },
       })
         .then(() => {
-          commit("UPDATE_REVIEW", review);
-          router.push({ name: "vdetail", params: { id: review.id } });
+          dispatch("getReviews", review.vid);
+          //commit("UPDATE_REVIEW", review);
+          //router.push({ name: "vdetail", params: { id: review.id } });
         })
         .catch((err) => {
           console.log(err);

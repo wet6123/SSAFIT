@@ -3,18 +3,23 @@
     <div class="review">
       <div>
         <img
-                style="border: 2px solid; border-radius: 70%"
-                :src="require(`@/assets/images/${userinfo.profile}.png`)"
-                width="40px"
-              />
+          style="border: 2px solid; border-radius: 70%"
+          :src="require(`@/assets/images/${userinfo.profile}.png`)"
+          width="40px"
+        />
       </div>
 
       <div class="review-write">
-        <star-rating
-          v-model="rating"
-          :increment="0.5"
-          :star-size="20"
-        ></star-rating>
+        <b-row>
+          <b-col cols="2" class="mt-2"> {{ userinfo.nickname }}</b-col>
+          <b-col cols="10">
+            <star-rating
+              v-model="rating"
+              :increment="0.5"
+              :star-size="20"
+            ></star-rating>
+          </b-col>
+        </b-row>
         <v-text-field
           @keyup.enter="createReview"
           v-model="content"
