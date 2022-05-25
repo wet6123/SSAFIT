@@ -80,10 +80,7 @@ export default {
     getPhotos: function () {
       this.$store
         .dispatch("getRecommend")
-        .then(() => {
-          console.log("recommend");
-          console.log(this.recommend);
-        })
+        .then(() => {})
         .catch(() => {
           console.log("getRecommend err");
         });

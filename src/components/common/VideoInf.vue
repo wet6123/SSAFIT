@@ -45,8 +45,7 @@ export default {
     },
   },
   watch: {
-    part: function (val) {
-      console.log(val);
+    part: function () {
       this.reset();
     },
   },
@@ -94,9 +93,7 @@ export default {
       this.$store.dispatch(this.option.action).then(() => {
         let add = [];
         //data
-        console.log(this.part);
         if (this.option.state == "videos") {
-          console.log("load videos");
           for (let video of this.videos) {
             if (video.part.includes(this.part)) {
               let { title, ...rest } = video;
@@ -105,7 +102,6 @@ export default {
             }
           }
         } else if (this.option.state == "watched") {
-          console.log("load watched");
           for (let video of this.watched) {
             if (video.part.includes(this.part)) {
               let { title, ...rest } = video;
@@ -114,7 +110,6 @@ export default {
             }
           }
         } else if (this.option.state == "liked") {
-          console.log("load liked");
           for (let video of this.liked) {
             if (video.part.includes(this.part)) {
               let { title, ...rest } = video;
@@ -124,16 +119,12 @@ export default {
           }
         }
         this.photos = [...this.photos, ...add];
-        console.log("photos");
-        console.log(this.photos);
         this.loaded += add.length;
-        // console.log(this.photos.length);
         this.addFromLoaded();
       });
     },
     onIntersect(entries, observer, isIntersecting) {
       if (isIntersecting) {
-        // console.log(isIntersecting);
         if (this.current == this.loaded) {
           // this.getPhotos(); //무한히 같은 영상 목록 로드
         } else {
@@ -147,10 +138,6 @@ export default {
       this.shownPhotos.splice(this.current, 3);
       this.shownPhotos.splice(this.current, 0, ...this.photos.splice(0, added));
       this.shownPhotos.push({}, {}, {});
-      console.log("shownphotos");
-      console.log(this.shownPhotos);
-      console.log("loaded: " + this.loaded + " current: " + this.current);
-      // console.log(this.shownPhotos.length);
       this.current += added;
     },
     reset() {
