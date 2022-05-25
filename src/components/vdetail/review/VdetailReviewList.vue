@@ -72,7 +72,7 @@
                 <b-col cols="1">
                   <img
                     style="border: 2px solid; border-radius: 70%"
-                    :src="require(`@/assets/images/${review.profile}.png`)"
+                    :src="require(`@/assets/images/${userinfo.profile}.png`)"
                     width="30px"
                   />
                 </b-col>
@@ -249,7 +249,7 @@ export default {
         id: id,
         vid: this.video.id,
         content: this.filleditReview[id],
-        rate: this.filleditRate[id],
+        rate: this.filleditRate[id] * 2,
       };
       this.$store.dispatch("modifyReview", modify);
       let tmp = this.editReview.at(id);
@@ -271,6 +271,7 @@ export default {
     for (let j = 0; j < this.replies.length; j++) {
       this.editReview[this.replies[j].id] = false;
     }
+    console.log(this.reviews)
   },
 };
 </script>

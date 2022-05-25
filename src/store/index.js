@@ -13,6 +13,7 @@ export default new Vuex.Store({
     // 비디오 관련
     videos: [],
     video: {},
+    avgRate: 0,
 
     // 추천 비디오 관련
     recommend: [],
@@ -174,7 +175,6 @@ export default new Vuex.Store({
             for (let video of res.data) {
               video.title = lodash.unescape(video.title);
             }
-            console.log(res);
             commit("GET_VIDEOS", res.data);
             resolve();
           })
@@ -221,8 +221,6 @@ export default new Vuex.Store({
           headers,
         })
           .then((res) => {
-            console.log("res.data");
-            console.log(res);
             const ans = [...res.data.slice(0, 12)];
             ans.forEach((element) => {
               element.title = lodash.unescape(element.title); //title decoding
@@ -232,7 +230,6 @@ export default new Vuex.Store({
             });
             res.data = ans;
 
-            console.log(res);
             commit("GET_RECOMMEND", res.data);
             resolve();
           })
@@ -264,7 +261,6 @@ export default new Vuex.Store({
             for (let video of res.data) {
               video.title = lodash.unescape(video.title);
             }
-            console.log(res);
             commit("GET_LIKED", res.data);
             resolve();
           })
@@ -284,8 +280,7 @@ export default new Vuex.Store({
           "access-token": localStorage.getItem("access-token"),
         },
       })
-        .then((res) => {
-          console.log("createLiked: " + res.data);
+        .then(() => {
           commit("CREATE_LIKED", payload);
         })
         .catch((err) => {
@@ -305,8 +300,7 @@ export default new Vuex.Store({
           "access-token": localStorage.getItem("access-token"),
         },
       })
-        .then((res) => {
-          console.log("deleteLiked: " + res.data);
+        .then(() => {
         })
         .catch((err) => {
           console.log(err);
@@ -334,7 +328,6 @@ export default new Vuex.Store({
             for (let video of res.data) {
               video.title = lodash.unescape(video.title);
             }
-            console.log(res);
             commit("GET_WATCHED", res.data);
             resolve();
           })
@@ -362,7 +355,6 @@ export default new Vuex.Store({
         },
       })
         .then((res) => {
-          console.log(res);
           commit("GET_REVIEWS", res.data);
           dispatch("getReplies", id);
         })
@@ -402,7 +394,6 @@ export default new Vuex.Store({
         },
       })
         .then((res) => {
-          console.log(res);
           commit("GET_REPLIES", res.data);
           commit("SET_REPLIES_NUM", res.data);
         })
@@ -439,8 +430,6 @@ export default new Vuex.Store({
       })
         .then(() => {
           dispatch("getReviews", review.vid);
-          //commit("UPDATE_REVIEW", review);
-          //router.push({ name: "vdetail", params: { id: review.id } });
         })
         .catch((err) => {
           console.log(err);
@@ -472,12 +461,9 @@ export default new Vuex.Store({
         params: user,
       })
         .then((res) => {
-          console.log(res);
           if (res.data.message == "success") {
-            //commit("USER_LOGIN");
             localStorage.setItem("access-token", res.data["access-token"]);
             dispatch("getUserInfo");
-            //router.push({ name: "main" });
           } else {
             alert("아이디 또는 비밀번호가 올바르지 않습니다.");
           }
@@ -497,7 +483,6 @@ export default new Vuex.Store({
           },
         })
           .then((res) => {
-            console.log(res);
             commit("USER_LOGIN", res.data);
             router.push({ name: "main" });
           })
@@ -514,7 +499,6 @@ export default new Vuex.Store({
         method: "GET",
       })
         .then((res) => {
-          console.log(res);
           if (res.data == "success") {
             commit("CHECK_DUPL_ID", userid);
             alert("사용가능한 아이디 입니다.");
@@ -533,7 +517,6 @@ export default new Vuex.Store({
         method: "GET",
       })
         .then((res) => {
-          console.log(res);
           if (res.data == "success") {
             commit("CHECK_DUPL_EMAIL", email);
             alert("사용가능한 이메일 입니다.");
@@ -552,8 +535,7 @@ export default new Vuex.Store({
         method: "POST",
         params: user,
       })
-        .then((res) => {
-          console.log(res);
+        .then(() => {
           alert(`${user.nickname}님, 회원가입을 축하드립니다!`);
           commit("DUPL_RESET");
           router.push({ name: "userlogin" });
@@ -572,7 +554,6 @@ export default new Vuex.Store({
         params: user,
       })
         .then((res) => {
-          console.log(res);
           alert(`${user.nickname}님의 id는 "${res.data}" 입니다.`);
         })
         .catch((err) => {
@@ -587,8 +568,7 @@ export default new Vuex.Store({
         method: "GET",
         params: user,
       })
-        .then((res) => {
-          console.log(res);
+        .then(() => {
           commit("SET_AUTH_PW_T");
           commit("TMP_USER_ID", user.userid);
           router.push({ name: "userpw" });
@@ -609,8 +589,7 @@ export default new Vuex.Store({
           "access-token": localStorage.getItem("access-token"),
         },
       })
-        .then((res) => {
-          console.log(res);
+        .then(() => {
           commit("SET_AUTH_PROFILE_F");
           alert("비밀번호 재설정이 완료되었습니다.");
           commit("USER_LOGOUT");
@@ -633,7 +612,6 @@ export default new Vuex.Store({
         },
       })
         .then((res) => {
-          console.log(res);
           if (res.data == "success") {
             commit("SET_AUTH_PROFILE_T");
             router.push({ name: "memberedit" });
@@ -656,8 +634,7 @@ export default new Vuex.Store({
           "access-token": localStorage.getItem("access-token"),
         },
       })
-        .then((res) => {
-          console.log(res);
+        .then(() => {
           alert("회원정보 수정이 완료되었습니다.");
           commit("DUPL_RESET");
           commit("SET_AUTH_PROFILE_F");
@@ -681,6 +658,7 @@ export default new Vuex.Store({
         },
       })
         .then(() => {
+          alert("회원탈퇴 되었습니다.")
           commit("USER_LOGOUT");
           router.push({ name: "main" });
         })

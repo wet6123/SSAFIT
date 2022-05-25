@@ -1,14 +1,22 @@
 <template>
   <div class="container">
     <div>
-      <h2>유저 리뷰 <span>{{ nums }}개</span></h2>
+      <b-row>
+        <b-col><h2>유저 리뷰 </h2></b-col>
+        <b-col><h5 class="mt-3">{{ nums }}개</h5></b-col>
+          <b-col cols="8"
+                  >평점: <star-rating
+                    :rating="video.avgRate / 2 > 0 ? video.avgRate / 2 : 0"
+                    :read-only="true"
+                    :increment="0.5"
+                    :star-size="20"
+                  ></star-rating
+                ></b-col>
+      </b-row>
     </div>
     <hr />
     <div class="container">
       <vdetail-review-create />
-      <!-- <div v-if="로그인상태">
-              리뷰 작성
-          </div> -->
       <vdetail-review-list></vdetail-review-list>
     </div>
   </div>
@@ -17,6 +25,7 @@
 <script>
 import VdetailReviewList from "@/components/vdetail/review/VdetailReviewList.vue";
 import VdetailReviewCreate from "@/components/vdetail/review/VdetailReviewCreate.vue";
+import StarRating from "vue-star-rating";
 import { mapState } from "vuex";
 
 export default {
@@ -24,9 +33,10 @@ export default {
   components: {
     VdetailReviewList,
     VdetailReviewCreate,
+    StarRating,
   },
   computed: {
-    ...mapState(["reviews"]),
+    ...mapState(["reviews", "video"]),
     nums() {
       return this.reviews.length;
     },
