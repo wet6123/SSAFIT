@@ -205,38 +205,30 @@ export default new Vuex.Store({
     getRecommend({ commit }, payload) {
       return new Promise((resolve, reject) => {
         let params = null;
+        let headers = null;
 
         if (payload) {
           params = payload;
+        }
+        if (localStorage.getItem("access-token")) {
+          headers = { "access-token": localStorage.getItem("access-token") };
         }
         const API_URL = `${REST_API}/video/recommended`; // 백엔드 참고
         axios({
           url: API_URL,
           method: "GET",
           params,
-          headers: {
-            "access-token": localStorage.getItem("access-token"),
-          },
+          headers,
         })
           .then((res) => {
-            const ans = [
-              JSON.parse(JSON.stringify(res.data[6])),
-              JSON.parse(JSON.stringify(res.data[7])),
-              JSON.parse(JSON.stringify(res.data[8])),
-              ...res.data.slice(0, 9),
-              JSON.parse(JSON.stringify(res.data[0])),
-              JSON.parse(JSON.stringify(res.data[1])),
-              JSON.parse(JSON.stringify(res.data[2])),
-            ];
-            let cnt = 0;
+            console.log("res.data");
+            console.log(res);
+            const ans = [...res.data.slice(0, 12)];
             ans.forEach((element) => {
-              cnt++;
-              element.idx = cnt;
-              if (cnt < 4) element.last = true;
-              else element.last = false;
-              if (cnt > 12) element.first = true;
-              else element.first = false;
               element.title = lodash.unescape(element.title); //title decoding
+              if (element.title.length > 27) {
+                element.title = element.title.substr(0, 27) + "...";
+              }
             });
             res.data = ans;
 
