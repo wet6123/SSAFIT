@@ -87,7 +87,6 @@ export default {
     //검색
     search(keyword) {
       let add = [];
-      console.log(keyword);
       for (let video of this.videos) {
         if (video.title.toLowerCase().includes(keyword.toLowerCase())) {
           let { title, ...rest } = video;
