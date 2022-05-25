@@ -188,7 +188,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .notCard {
   max-width: 370px;
   flex-grow: 1;
