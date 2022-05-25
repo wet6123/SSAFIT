@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div>MainCarousel</div>
+    <!-- <div>MainCarousel</div> -->
     <h4>추천 영상</h4>
     <v-carousel height="auto" hide-delimiters>
       <template v-for="(photo, index) in recommend">

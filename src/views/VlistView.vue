@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div>여기는 VlistView</div>
+    <!-- <div>여기는 VlistView</div> -->
     <router-view />
   </div>
 </template>
