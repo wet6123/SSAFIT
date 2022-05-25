@@ -428,7 +428,7 @@ export default new Vuex.Store({
         });
     },
     modifyReview({ dispatch }, review) {
-      const API_URL = `${REST_API}/review/update/${review.id}`; // 백엔드 참고
+      const API_URL = `${REST_API}/review/update`; // 백엔드 참고
       axios({
         url: API_URL,
         method: "PUT",
