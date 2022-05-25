@@ -223,7 +223,14 @@ export default {
       this.filleditReview[review.id] = review.content;
       this.filleditRate[review.id] = review.rate / 2;
       let tmp = this.editReview[review.id];
-      this.editReview.splice(review.id, 1, tmp != true ? true : false);
+      console.log(tmp)
+      if(tmp === undefined) {
+        this.editReview[review.id] = false;
+      console.log(this.editReview[review.id]);
+
+      }
+      this.editReview.splice(review.id, 1, !tmp? true : false);
+      console.log(this.editReview[review.id]);
     },
     toggleCreateReply(index) {
       let e = document.getElementById(index);
@@ -252,8 +259,7 @@ export default {
         rate: this.filleditRate[id] * 2,
       };
       this.$store.dispatch("modifyReview", modify);
-      let tmp = this.editReview.at(id);
-      this.editReview.splice(id, 1, tmp != true ? true : false);
+      this.editReview.splice(id, 1, false);
       // 객체만들어서 수정내용(review는 별점 포함, reply는 미포함) dispatch 후,
       //  edit폼 끄기 (토글)
     },
@@ -265,13 +271,7 @@ export default {
   created() {
     for (let i = 0; i < this.reviews.length; i++) {
       this.content[i] = "";
-      // ...
-      this.editReview[this.reviews[i].id] = false;
     }
-    for (let j = 0; j < this.replies.length; j++) {
-      this.editReview[this.replies[j].id] = false;
-    }
-    console.log(this.reviews)
   },
 };
 </script>
