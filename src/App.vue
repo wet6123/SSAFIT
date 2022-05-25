@@ -27,7 +27,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 @font-face {
   font-family: "GmarketSansBold";
   src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansBold.woff")
@@ -38,6 +38,5 @@ export default {
 * {
   font-family: "GmarketSansBold";
   letter-spacing: 3px;
-  color: rgb(76, 74, 74);
 }
 </style>

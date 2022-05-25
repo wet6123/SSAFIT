@@ -670,6 +670,25 @@ export default new Vuex.Store({
           alert(`잘못된 요청입니다.`);
         });
     },
+    //회원 탈퇴 관련
+    userDelete({ commit }) {
+      const API_URL = `${REST_API}/user/signout`;
+      axios({
+        url: API_URL,
+        method: "DELETE",
+        headers: {
+          "access-token": localStorage.getItem("access-token"),
+        },
+      })
+        .then(() => {
+          commit("USER_LOGOUT");
+          router.push({ name: "main" });
+        })
+        .catch((err) => {
+          console.log(err);
+          alert(`잘못된 요청입니다.`);
+        });
+    },
   },
   modules: {},
 });
