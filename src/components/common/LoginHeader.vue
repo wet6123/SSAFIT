@@ -4,16 +4,23 @@
       <v-app-bar app color="white" flat>
         <a href="/" class="ssafit"> &nbsp;SSAFIT &nbsp; </a
         ><img
-          style="width: 80px"
-          class="container"
-          @click="move()"
-          src="https://img.icons8.com/ios/50/000000/exercise.png"
+          style="width: 55px"
+          class="run"
+          src="https://img.icons8.com/stickers/100/000000/exercise-skin-type-1.png"
         />
         <v-spacer></v-spacer>
-        <h6 class="mt-3">
-          <b-icon icon="star-fill" animation="fade" font-scale="1"></b-icon>
+        <h6 class="mt-3" style="margin: 10px 20px">
+          <img
+            style="width: 40px"
+            src="https://img.icons8.com/stickers/100/000000/teddy-bear.png"
+          />
           {{ userinfo.nickname }}님 안녕하세요
-          <b-icon icon="star-fill" animation="fade" font-scale="1"></b-icon>
+          <b-icon
+            icon="star-fill"
+            animation="fade"
+            font-scale="1"
+            style="margin-left: 10px"
+          ></b-icon>
         </h6>
         <v-menu left bottom>
           <template v-slot:activator="{ on, attrs }">
@@ -35,13 +42,17 @@
               link
             >
               <v-list-item-title
-                ><v-icon>{{ link.icon }}</v-icon>
+                ><img :src="`${link.icon}`" style="width: 30px" />
                 {{ link.title }}</v-list-item-title
               >
             </v-list-item>
             <v-list-item @click="userLogout" class="router" link>
               <v-list-item-title
-                ><v-icon>mdi-logout</v-icon> 로그아웃</v-list-item-title
+                ><img
+                  src="https://img.icons8.com/stickers/100/000000/exit.png"
+                  style="width: 30px"
+                />
+                로그아웃</v-list-item-title
               >
             </v-list-item>
           </v-list>
@@ -62,7 +73,7 @@
                     link
                   >
                     <v-list-item-icon>
-                      <v-icon>{{ link.icon }}</v-icon>
+                      <img :src="`${link.icon}`" style="width: 40px" />
                     </v-list-item-icon>
                     <v-list-item-content>
                       {{ link.title }}
@@ -79,7 +90,7 @@
                     link
                   >
                     <v-list-item-icon>
-                      <v-icon>{{ link.icon }}</v-icon>
+                      <img :src="`${link.icon}`" style="width: 40px" />
                     </v-list-item-icon>
                     <v-list-item-content>
                       {{ link.title }}
@@ -107,28 +118,44 @@ import { mapState } from "vuex";
 export default {
   data: () => ({
     links: [
-      { title: "홈", router: "/", icon: "mdi-home" },
-      { title: "검색", router: "/search", icon: "mdi-magnify" },
+      {
+        title: "홈",
+        router: "/",
+        icon: "https://img.icons8.com/stickers/100/000000/home-page.png",
+      },
+      {
+        title: "검색",
+        router: "/search",
+        icon: "https://img.icons8.com/stickers/100/000000/search.png",
+      },
     ],
     links2: [
-      { title: "찜리스트", router: "/vlist/like", icon: "mdi-cards-heart" },
+      {
+        title: "찜리스트",
+        router: "/vlist/like",
+        icon: "https://img.icons8.com/stickers/100/000000/like.png",
+      },
       {
         title: "시청기록",
         router: "/vlist/watched",
-        icon: "mdi-monitor-eye",
+        icon: "https://img.icons8.com/stickers/100/000000/laptop-play-video.png",
       },
     ],
     links3: [
       {
         title: "프로필 편집",
         router: "/member/check",
-        icon: "mdi-account-edit-outline",
+        icon: "https://img.icons8.com/stickers/100/000000/edit-user-female.png",
       },
-      { title: "찜리스트", router: "/vlist/like", icon: "mdi-cards-heart" },
+      {
+        title: "찜리스트",
+        router: "/vlist/like",
+        icon: "https://img.icons8.com/stickers/100/000000/like.png",
+      },
       {
         title: "시청기록",
         router: "/vlist/watched",
-        icon: "mdi-monitor-eye",
+        icon: "https://img.icons8.com/stickers/100/000000/laptop-play-video.png",
       },
     ],
   }),
@@ -139,9 +166,6 @@ export default {
     userLogout() {
       this.$store.commit("USER_LOGOUT");
       this.$router.push({ name: "main" });
-    },
-    move() {
-      document.querySelector(".container").classList.add("go");
     },
   },
 };
@@ -158,8 +182,22 @@ export default {
   background-color: grey;
 }
 .ssafit {
-  color: gray;
-  text-decoration: none;
+  background-image: linear-gradient(
+    90deg,
+    red,
+    orange,
+    yellow,
+    green,
+    blue,
+    navy,
+    purple
+  );
+  -webkit-background-clip: text;
+  color: transparent;
+
+  font-weight: bold;
+  font-size: 40px;
+
   font-size: 25px;
 }
 .router {
@@ -170,8 +208,8 @@ export default {
   color: white;
   font-size: 20px;
 }
-.go {
-  transform: translateX(300px) scale(0.7, 1);
-  transition-duration: 5s;
+.run:hover {
+  transform: translateX(300px) scale(0.8, 1);
+  transition-duration: 2s;
 }
 </style>

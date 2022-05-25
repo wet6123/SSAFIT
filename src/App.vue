@@ -27,4 +27,17 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+@font-face {
+  font-family: "GmarketSansBold";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansBold.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+* {
+  font-family: "GmarketSansBold";
+  letter-spacing: 3px;
+  color: rgb(76, 74, 74);
+}
+</style>
