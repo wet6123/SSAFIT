@@ -222,10 +222,7 @@ export default {
   );
   -webkit-background-clip: text;
   color: transparent;
-
   font-weight: bold;
-  font-size: 40px;
-
   font-size: 25px;
 }
 .router {
