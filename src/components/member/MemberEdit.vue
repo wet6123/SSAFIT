@@ -8,21 +8,26 @@
         <hr style="width: 30%" />
         <b-form @submit.stop.prevent class="form-text-color">
           <v-carousel class="profile" v-model="user.profile">
-            <div>마음에 드는 프로필 사진을 클릭해주세요</div><br />
+            <div>마음에 드는 프로필 사진을 클릭해주세요</div>
+            <br />
             <v-carousel-item
               style="text-align: center"
               v-for="i in 11"
               :key="i"
               reverse-transition="fade-transition"
               transition="fade-transition"
-              ><img :src="require(`@/assets/images/${i-1}.png`)" width="400px"
+              ><img
+                :src="require(`@/assets/images/${i - 1}.png`)"
+                width="400px"
             /></v-carousel-item>
           </v-carousel>
           <br />
           <!-- 아이디 -->
           <b-row>
             <b-col cols="9">
-              <b-form-group label="아이디"><b>{{ user.userid }}</b></b-form-group>
+              <b-form-group label="아이디"
+                ><b>{{ user.userid }}</b></b-form-group
+              >
             </b-col>
             <b-col> </b-col>
           </b-row>
@@ -142,12 +147,26 @@
           </b-row>
         </b-form>
       </b-container>
+      <!--회원탈퇴-->
+      <b-container class="inner-form">
+        <h3>회원탈퇴</h3>
+        <hr style="width: 30%" />
+        <div style="margin: 30px 0px">
+          탈퇴를 원하시면 아래 회원탈퇴 버튼을 눌러주세요
+        </div>
+        <b-button
+          class="w-30 btn btn-lg btn-outline-secondary login-btn"
+          type="submit"
+          @click="userDelete"
+          >회원탈퇴</b-button
+        >
+      </b-container>
     </div>
   </main>
 </template>
 
 <script>
-import {mapState} from 'vuex';
+import { mapState } from "vuex";
 
 export default {
   data() {
@@ -182,46 +201,49 @@ export default {
 
     // 버튼 활성화
     isDisabledProfile() {
-      if(this.validName && this.validEmail) {
-        return false;        
-      }
-      else {
+      if (this.validName && this.validEmail) {
+        return false;
+      } else {
         return true;
       }
     },
     isDisabledPw() {
-      if(this.validPw && this.validPw_Re) {
-        return false;        
-      }
-      else {
+      if (this.validPw && this.validPw_Re) {
+        return false;
+      } else {
         return true;
       }
-    }
+    },
   },
   methods: {
     emailDuplicateCheck() {
-      this.$store.dispatch('DuplicateEmail', this.user.email)
+      this.$store.dispatch("DuplicateEmail", this.user.email);
     },
     editProfile() {
-      if (this.user.email != this.userinfo.email && (!this.checkedEmail || this.user.email != this.compare_email)) {
-        alert("이메일 중복체크를 해주세요")
-      }
-      else {
-        this.$store.dispatch('modifyProfile', this.user)
+      if (
+        this.user.email != this.userinfo.email &&
+        (!this.checkedEmail || this.user.email != this.compare_email)
+      ) {
+        alert("이메일 중복체크를 해주세요");
+      } else {
+        this.$store.dispatch("modifyProfile", this.user);
       }
     },
     changePw() {
-      let user = {userid: this.user.userid, pw: this.pw};
+      let user = { userid: this.user.userid, pw: this.pw };
       this.$store.dispatch("setPw", user);
-    }
+    },
+    userDelete() {
+      this.$store.dispatch("userDelete");
+    },
   },
-  created(){
+  created() {
     this.$store.commit("SET_AUTH_PW_F");
     this.user.profile = this.userinfo.profile;
     this.user.userid = this.userinfo.userid;
     this.user.nickname = this.userinfo.nickname;
     this.user.email = this.userinfo.email;
-  }
+  },
 };
 </script>
 

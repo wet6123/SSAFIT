@@ -450,7 +450,7 @@ export default new Vuex.Store({
           console.log(err);
         });
     },
-    deleteReview({dispatch}, payload) {
+    deleteReview({ dispatch }, payload) {
       const API_URL = `${REST_API}/review/delete/${payload.id}`; // 백엔드 참고
       axios({
         url: API_URL,
@@ -668,6 +668,25 @@ export default new Vuex.Store({
           alert("다시 로그인 해주세요!");
           commit("USER_LOGOUT");
           router.push({ name: "userlogin" });
+        })
+        .catch((err) => {
+          console.log(err);
+          alert(`잘못된 요청입니다.`);
+        });
+    },
+    //회원 탈퇴 관련
+    userDelete({ commit }) {
+      const API_URL = `${REST_API}/user/signout`;
+      axios({
+        url: API_URL,
+        method: "DELETE",
+        headers: {
+          "access-token": localStorage.getItem("access-token"),
+        },
+      })
+        .then(() => {
+          commit("USER_LOGOUT");
+          router.push({ name: "main" });
         })
         .catch((err) => {
           console.log(err);
