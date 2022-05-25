@@ -234,6 +234,9 @@ export default {
 }
 
 .card span {
+  height: 70px;
+  overflow: hidden;
+
   visibility: hidden;
   opacity: 0;
   position: absolute;

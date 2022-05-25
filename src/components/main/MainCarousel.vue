@@ -17,7 +17,7 @@
                   <v-sheet v-if="+index + i < recommend.length" height="100%;">
                     <v-row class="fill-height" align="end" justify="center">
                       <div class="display-3, cardContainer">
-                        <span class="card">
+                        <span class="cardCar">
                           <router-link
                             :to="`/vdetail/${recommend[index + i].id}`"
                             style="color: black"
@@ -27,14 +27,7 @@
                               alt=""
                               style="width: 100%"
                             />
-                            <span
-                              style="
-                                display: inline-block;
-                                max-height: 70px;
-                                overflow: hidden;
-                              "
-                              >{{ recommend[index + i].title }}</span
-                            >
+                            <span>{{ recommend[index + i].title }}</span>
                           </router-link>
                           <button @click="like(recommend[index + i].id)">
                             <font-awesome-icon
@@ -125,11 +118,11 @@ export default {
 </script>
 
 <style scoped>
-.card * {
+.cardCar * {
   background-color: transparent !important;
 }
 
-.card {
+.cardCar {
   flex-grow: 1;
   display: inline-block;
   width: auto;
@@ -139,24 +132,27 @@ export default {
   border: 0 !important;
 }
 
-.card:hover {
+.cardCar:hover {
   flex-grow: 4;
   flex-basis: 270px;
   transition: 0.5s;
 }
 
-.card img {
+.cardCar img {
   width: 100%;
   transition: 0.3s;
 }
 
-.card:hover img {
+.cardCar:hover img {
   width: 100%;
   filter: brightness(35%);
   transition: 0.3s;
 }
 
-.card span {
+.cardCar span {
+  height: 70px;
+  overflow: hidden;
+
   visibility: hidden;
   opacity: 0;
   position: absolute;
@@ -169,7 +165,7 @@ export default {
   transition: 0.3s;
 }
 
-.card:hover span {
+.cardCar:hover span {
   visibility: visible;
   opacity: 1;
   top: 60%;
@@ -177,7 +173,7 @@ export default {
   transition: 0.3s;
 }
 
-.card button {
+.cardCar button {
   position: absolute;
   top: 45%;
   left: 10%;
@@ -188,19 +184,19 @@ export default {
   transition-duration: 0.5s;
 }
 
-.card:hover button {
+.cardCar:hover button {
   opacity: 1;
   visibility: visible;
   transition: 0.5s;
 }
 
-.card #likeBtn {
+.cardCar #likeBtn {
   color: white;
   font-size: 30px;
   transition: 0.3s;
 }
 
-.card #likeBtn:hover {
+.cardCar #likeBtn:hover {
   color: #f82f62;
   transition: 0.3s;
 }
