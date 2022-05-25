@@ -2,10 +2,12 @@
   <v-app>
     <div>
       <v-app-bar app color="white" flat>
-        <a href="/" class="ssafit">
-          &nbsp;SSAFIT &nbsp;
-          <img src="https://img.icons8.com/ios/50/000000/exercise.png"
-        /></a>
+        <a href="/" class="ssafit"> &nbsp;SSAFIT &nbsp;</a>
+        <img
+          style="width: 55px"
+          class="run"
+          src="https://img.icons8.com/stickers/100/000000/exercise-skin-type-1.png"
+        />
         <v-spacer></v-spacer>
         <v-btn to="/user/login" color="grey" class="login"> Log In </v-btn>
       </v-app-bar>
@@ -24,7 +26,7 @@
                     link
                   >
                     <v-list-item-icon>
-                      <v-icon>{{ link.icon }}</v-icon>
+                      <img :src="`${link.icon}`" style="width: 40px" />
                     </v-list-item-icon>
                     <v-list-item-content>
                       {{ link.title }}
@@ -41,7 +43,7 @@
                     link
                   >
                     <v-list-item-icon>
-                      <v-icon>{{ link.icon }}</v-icon>
+                      <img :src="`${link.icon}`" style="width: 40px" />
                     </v-list-item-icon>
                     <v-list-item-content>
                       {{ link.title }}
@@ -67,15 +69,27 @@
 export default {
   data: () => ({
     links: [
-      { title: "홈", router: "/", icon: "mdi-home" },
-      { title: "검색", router: "/search", icon: "mdi-magnify" },
+      {
+        title: "홈",
+        router: "/",
+        icon: "https://img.icons8.com/stickers/100/000000/home-page.png",
+      },
+      {
+        title: "검색",
+        router: "/search",
+        icon: "https://img.icons8.com/stickers/100/000000/search.png",
+      },
     ],
     links2: [
-      { title: "찜리스트", router: "/vlist/like", icon: "mdi-cards-heart" },
+      {
+        title: "찜리스트",
+        router: "/vlist/like",
+        icon: "https://img.icons8.com/stickers/100/000000/like.png",
+      },
       {
         title: "시청기록",
         router: "/vlist/watched",
-        icon: "mdi-monitor-eye",
+        icon: "https://img.icons8.com/stickers/100/000000/laptop-play-video.png",
       },
     ],
   }),
@@ -93,8 +107,22 @@ export default {
   background-color: grey;
 }
 .ssafit {
-  color: gray;
-  text-decoration: none;
+  background-image: linear-gradient(
+    90deg,
+    red,
+    orange,
+    yellow,
+    green,
+    blue,
+    navy,
+    purple
+  );
+  -webkit-background-clip: text;
+  color: transparent;
+
+  font-weight: bold;
+  font-size: 40px;
+
   font-size: 25px;
 }
 .router {
@@ -104,5 +132,9 @@ export default {
 .login {
   color: white;
   font-size: 20px;
+}
+.run:hover {
+  transform: translateX(300px) scale(0.8, 1);
+  transition-duration: 2s;
 }
 </style>
